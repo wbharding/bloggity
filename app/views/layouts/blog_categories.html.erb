@@ -4,28 +4,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title><%= get_page_name %></title>
-  <%= include_stylesheets('global_css', global_styles) %>  		
-	<%= include_javascripts('global_js', global_jquery_javascripts) -%>
-	<%= include_javascripts("blogs_js_jquery", 'jquery-tooltip') %>			
+  <title><%= @page_name || "My Bloggity Blog" %></title>
+  <%= stylesheet_link_tag 'bloggity/blog' %>  		
 	
-	<script type="text/javascript">
-		// <![CDATA[
-    // The following returns the $() function to Prototype and adds the $j alias
-    // for accessing jQuery.  So you can either use $j() or jQuery() when you
-    // want to call a jQuery function.
-    var $j = jQuery.noConflict();
-  // ]]>
-  </script>
-
+	<%= javascript_include_tag 'bloggity/jquery' %>
+	<%= javascript_include_tag 'bloggity/jquery-form' %>
+	<%= javascript_include_tag 'bloggity/fckeditor/fckeditor' %>
+	
 </head>
 <body>
 
-<%= render_header %>
-
 <%= yield  %>
-
-<%= render :partial => "home/footer" %>
 
 </body>
 </html>

@@ -1,10 +1,33 @@
 require 'active_record'
+require File.join(File.dirname(__FILE__), '../task_util')
+require 'ruby-debug'
+
+include TaskUtil
+Debugger.start
+
+BLOGGITY_BASE_DIR = File.join(File.dirname(__FILE__), "../..")
 
 namespace :bloggity do 
 	desc "Add database tables for bloggity"
-	task :bootstrap => :environment do
+	task :bootstrap_db => :environment do
 	  CreateBlogTables.up
+		puts "Bloggity tables created successfully!"
 	end
+	
+	desc "Copy the stylesheets and Javascripts used natively by bloggity into host app's public directory"
+	task :bootstrap_bloggity_assets => :environment do
+		destination_dir = RAILS_ROOT + "/public/stylesheets/bloggity"
+		Engines.mirror_files_from(BLOGGITY_BASE_DIR + "/public/stylesheets", destination_dir)
+		puts "Files successfully copied to #{destination_dir}!"
+	end
+	
+	desc "Copy the third party Javascripts (jquery and FCKEditor) by bloggity into host app's public directory"
+	task :bootstrap_third_party_assets => :environment do
+		destination_dir = RAILS_ROOT + "/public/javascripts/bloggity"
+		Engines.mirror_files_from(BLOGGITY_BASE_DIR + "/public/javascripts/third_party", destination_dir)
+		puts "Files successfully copied to #{destination_dir}!"
+	end
+	
 end
 
 class CreateBlogTables < ActiveRecord::Migration
