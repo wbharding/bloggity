@@ -1,0 +1,30 @@
+<%# Renders the comments section for a blog post
+# -params-
+# blog: the blog post
+-%>
+
+<% responses = blog.comments.size %>
+<div id="commentContainer">
+	<h2 style="margin-bottom:0px"><%= pluralize(responses, 'response') %> to <%= blog.title %></h2>
+	<% if responses > 0 %>
+		<ul class="commentsBody">
+			<% blog.comments.each do |comment| %>
+				<%= render :partial => 'blog_comments/show', :locals => { :comment => comment } %>
+			<% end %>
+		</ul>
+	<% else %>
+		<p>No comments have been made on this blog.</p>
+	<% end %>
+	<% if logged_in? %>
+		<% if blog.comments_closed? %>
+			<p>Comments have been closed for this blog.</p>
+		<% else %>
+			<h3>Leave a Reply</h3>
+			<div style="padding:5px;">
+				Logged in as <%= current_user.display_name %><br />
+				<%= render :partial => 'blog_comments/new', :locals => { :blog => blog } %>
+			</div>
+		<% end %>
+	<% end %>
+<br/>
+</div>

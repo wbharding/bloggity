@@ -1,0 +1,55 @@
+#bloggityContainer .bodyBigSide {
+	padding:5px 10px;
+	width:750px;
+	float:left;
+}
+
+#bloggityContainer .bodyLittleSide {
+	padding:5px 10px;
+	width:200px;
+	float:left;
+}
+
+#bloggityContainer div.blogShowContainer div.postSummary {
+	color:gray;
+	background-color:#F8F8F8;
+	border-bottom:1px solid #DDDDDD;
+	border-top:1px solid #DDDDDD;
+	padding:10px;
+}
+
+#bloggityContainer #commentContainer ul.commentsBody {
+	margin:0;
+	padding:0;
+}
+
+#bloggityContainer #commentContainer ul.commentsBody li {
+	padding:5px;
+}
+
+#bloggityContainer #commentContainer ul.commentsBody li.dark {
+	color:#777777;	
+	background-color:#F8F8F8;
+	border-bottom:1px solid #DDDDDD;
+	border-top:1px solid #DDDDDD;
+}
+
+#bloggityContainer .moreBlogLink {
+	float:left;
+	font-weight:bold;
+	color:green;
+}
+
+#bloggityContainer .paginateContainer {
+	float:left;
+}
+
+#bloggityContainer #postList {
+	list-style-type:disc;
+	margin-left:0;
+	padding-left:5px;
+}
+
+#postList li {
+	padding-top:4px;
+}

@@ -1,0 +1,20 @@
+<div id="bloggityContainer">
+	<div class="bodyBigSide">
+		<h1>My Bloggity Blog</h1>
+		<%= flash[:error] %>
+		<% if blog_writer? %>
+			<%= link_to "New blog", new_blog_path %>
+		<% end %>
+	
+		<% for blog in @blogs %>
+			<%= render :partial => 'show', :locals => { :blog => blog, :header_style => 'h2', :show_comment_count => true } %>
+		<% end %>
+		
+		<% if @blogs && @blogs.total_pages > 1 -%>
+			<div class="moreBlogLink">See more blogs &nbsp;&nbsp;</div>
+			<div class="paginateContainer"><%= will_paginate(@blogs, {:form_name => :blog_show_params, :param_name => :page} ) -%></div>
+		<% end %>
+			
+	</div>
+	<%= render :partial => 'blogs/recent_list' %>
+</div>

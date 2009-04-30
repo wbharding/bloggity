@@ -1,0 +1,10 @@
+<%# Guess.
+# -params-
+# blog: the blog post
+-%>
+
+<% form_for(:blog_comment, BlogComment.new, :url => { :controller => 'blog_comments', :action => :create } ) do |f| %>
+	<%= f.hidden_field :record_id, :value => blog.id %>
+	<%= f.text_area :comment, :cols => 60, :rows => 4 %><br /><br />
+	<%= f.submit "Submit comment", :class => 'button26' %>
+<% end %>

@@ -1,0 +1,14 @@
+<p>
+	<b>Name:</b>
+	<%=h @blog_category.name %>
+</p>
+
+<p>
+  <b>Parent:</b>
+  <%=h @blog_category.parent_id %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_blog_category_path(@blog_category) %> |
+<%= link_to 'Back', blog_categories_path %>

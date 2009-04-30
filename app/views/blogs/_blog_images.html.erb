@@ -1,0 +1,12 @@
+<%# 
+# -params-
+# 
+-%>
+
+<br />
+<div id="blogInnerImageContainer">
+<% blog_images.each do |img| %>
+	<div><%= image_tag img.public_filename -%><br /><%= img.public_filename -%></div>
+<% end %>
+</div>
+<div style="clear:both"></div>

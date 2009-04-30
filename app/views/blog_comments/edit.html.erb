@@ -1,0 +1,9 @@
+<%# Guess.
+# -params-
+# blog: the blog post
+-%>
+<h1>Edit Your Blog Comment</h1>
+<% form_for(@blog_comment, :url => { :controller => 'blog_comments', :id => @blog_comment.id, :action => :update } ) do |f| %>
+	<%= f.text_area :comment, :cols => 60, :rows => 4 %><br /><br />
+	<%= f.submit "Update Comment", :class => 'button26' %>
+<% end %>

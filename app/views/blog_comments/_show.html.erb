@@ -1,0 +1,18 @@
+<%# Guess.
+# -params-
+# comment: the comment we're showing
+-%>
+
+<li class="<%= cycle('dark', '') -%>">
+	<p><span style="font-weight:bold;"><%= link_to(comment.user.display_name, comment.user) %> says:</span><br />
+	<%= comment.created_at.strftime("%x at %X") %></p>
+	<p style="margin:10px 5px 10px 0pt;"><%= simple_format(auto_link(sanitize(comment.comment))) %></p>
+	<% if current_user && current_user == comment.user %>
+		<%= link_to "Edit comment", { :controller => 'blog_comments', :action => :edit, :id => comment.id } %>
+	<% end %>
+	<% if blog_writer? %>
+		<%= link_to "Delete comment", { :controller => 'blog_comments', :action => :destroy, :id => comment, :referring_url => params }, { :method => :delete, :confirm => "Are you sure you want to delete this comment?" } %>
+	<% end %>
+			
+	</p>
+</li>
