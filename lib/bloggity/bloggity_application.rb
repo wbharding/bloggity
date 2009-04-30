@@ -1,6 +1,6 @@
-require 'page_names'
+require 'bloggity/page_names'
 
-module BloggityApplication
+module Bloggity::BloggityApplication
 	include PageNames
 	
 	# Implement in your application

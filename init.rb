@@ -1,5 +1,5 @@
-ActionView::Base.send :include, BloggityApplication
-ActionController::Base.send :include, BloggityApplication
+ActionView::Base.send :include, Bloggity::BloggityApplication
+ActionController::Base.send :include, Bloggity::BloggityApplication
 
 # FIX for engines model reloading issue in development mode
 if ENV['RAILS_ENV'] != 'production'
@@ -7,4 +7,3 @@ if ENV['RAILS_ENV'] != 'production'
 		ActiveSupport::Dependencies.load_once_paths.delete(path)
 	end
 end
-

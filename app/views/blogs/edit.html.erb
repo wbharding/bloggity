@@ -1,7 +1,6 @@
 <h1>New blog</h1>
 
 <%= error_messages_for :blog %>
-
 <% form_for(@blog) do |f| %>
   <p>
     <b>Title</b> <%= f.text_field :title %>
@@ -43,7 +42,7 @@
 	jQuery(document).ready(function($) 
 	{
 		var fckEditor = new FCKeditor('blog[body]');
-		fckEditor.BasePath = "/plugin_assets/bloggity/javascripts/fckeditor/";
+		fckEditor.BasePath = "/javascripts/bloggity/fckeditor/";
 		fckEditor.ReplaceTextarea();
 		
 		$('#uploadForm input').change(function(){

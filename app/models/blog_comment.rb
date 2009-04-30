@@ -12,9 +12,10 @@
 #  updated_at :datetime        
 #
 
-class BlogComment < Comment
+class BlogComment < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :blog, :foreign_key => :record_id
-	 
+	attr_protected :approved
+		
 	validates_presence_of :record_id, :user_id, :comment
 end
