@@ -28,6 +28,27 @@ namespace :bloggity do
 		puts "Files successfully copied to #{destination_dir}!"
 	end
 	
+	desc "Run Bloggity tests"
+	rule "" do |t|
+		# test:file:method
+		if /bloggity\:test:(.*)(:([^.]+))?$/.match(t.name)
+			arguments = t.name.split(":")[1..-1]
+			arguments.delete("test")
+			file_name = arguments.first
+			test_name = arguments[1..-1] 
+			
+			if File.exist?(BLOGGITY_BASE_DIR + "/test/unit/#{file_name}_test.rb")
+				run_file_name = "unit/#{file_name}_test.rb" 
+			elsif File.exist?(BLOGGITY_BASE_DIR + "/test/functional/#{file_name}_controller_test.rb")
+				run_file_name = "functional/#{file_name}_controller_test.rb" 
+			elsif File.exist?(BLOGGITY_BASE_DIR + "/test/functional/#{file_name}_test.rb")
+				run_file_name = "functional/#{file_name}_test.rb" 
+			end
+			
+			sh "ruby -Ilib:test #{BLOGGITY_BASE_DIR}/test/#{run_file_name} -n /#{test_name}/"
+		end
+	end
+	
 end
 
 class CreateBlogTables < ActiveRecord::Migration
