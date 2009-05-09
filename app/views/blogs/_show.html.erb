@@ -14,7 +14,7 @@
 		<%= image_tag "bloggity/time.gif" -%> Posted on <%= blog.created_at.strftime("%B %d, %Y") %>
 		<%= image_tag "bloggity/user.gif" -%> <%= link_to(blog.posted_by.display_name, blog.posted_by) -%>
 		<% if show_comment_count %>
-			<%= image_tag "bloggity/comment.gif" -%> <% if blog.comments.empty? %>No comments<% else %><%= link_to pluralize(blog.comments.size, "comment"), blog_named_link(blog) -%><% end %>
+			<%= image_tag "bloggity/comment.gif" -%> <% if blog.comments.empty? %><%= link_to "No comments", blog_named_link(blog) -%><% else %><%= link_to pluralize(blog.comments.size, "comment"), blog_named_link(blog) -%><% end %>
 		<% end %>
 	</div>
 	

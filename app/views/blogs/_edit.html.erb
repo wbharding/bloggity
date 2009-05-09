@@ -17,7 +17,7 @@
 	<%= f.submit "Save" %>
 <% end %>
 
-<br /><h4>Upload Images</h4>
+<br /><h3>Upload Assets</h3>
 <% remote_form_for(:blog_asset, :url => { :controller => "blogs", :action => :create_asset }, 
 		:html => { :method => :post, :id => 'uploadForm', :multipart => true }) do |f| -%>
 	<%= f.hidden_field :blog_id, :value => @blog.id %>
@@ -38,9 +38,9 @@
 						},
 						complete: function(XMLHttpRequest, textStatus) {
 							new_image = $("<img>").attr('src', XMLHttpRequest.responseText);
-							new_text = $("<div>").html(XMLHttpRequest.responseText);
-							new_container = $("<div>");
-							$('#blogInnerImageContainer').append(new_container);
+							new_text = $("<div class='asset_filename'>").html("Asset file path: <a href='" + XMLHttpRequest.responseText + "'>" + XMLHttpRequest.responseText + "</a>");
+							new_container = $("<div class='uploaded_asset'>");
+							$('#inner_asset_container').append(new_container);
 							new_container.append(new_image).append(new_text);
 						},
 						success: function(data) { 
@@ -51,6 +51,6 @@
 		});
 <% end %>
 
-	<div id="blogImageContainer">
-		<%= render :partial => "blog_images", :locals => { :blog_images => @blog.images } -%>
+	<div id="outer_asset_container">
+		<%= render :partial => "blog_assets", :locals => { :blog_assets => @blog.assets } -%>
 	</div>
