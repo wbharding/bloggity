@@ -63,16 +63,25 @@ class CreateBlogTables < ActiveRecord::Migration
 	    t.integer "width"
 	    t.integer "height"
 	  end
-	
+		
+	  create_table "blog_sets", :force => true do |t|
+	    t.string   "name"
+			t.integer  "url_identifier"
+	    t.datetime "created_at"
+	    t.datetime "updated_at"
+	  end
+		
+	  add_index "blog_sets", ["url_identifier"], :name => "index_blog_sets_on_url_identifier"
+		
 	  create_table "blog_categories", :force => true do |t|
 	    t.string   "name"
 			t.integer  "parent_id"
-	    t.integer  "group_id",   :default => 0
+	    t.integer  "blog_set_id"
 	    t.datetime "created_at"
 	    t.datetime "updated_at"
 	  end
 	
-	  add_index "blog_categories", ["group_id"], :name => "index_blog_categories_on_group_id"
+		add_index "blog_categories", ["blog_set_id"], :name => "index_blog_categories_on_blog_set_id"
 	  add_index "blog_categories", ["parent_id"], :name => "index_blog_categories_on_parent_id"
 	
 	  create_table "blog_comments", :force => true do |t|
@@ -83,8 +92,17 @@ class CreateBlogTables < ActiveRecord::Migration
 	    t.datetime "created_at"
 	    t.datetime "updated_at"
 	  end
-
-	  add_index "blog_comments", ["blog_id"], :name => "index_blog_comments_on_blog_id"
+	  
+		add_index "blog_comments", ["blog_id"], :name => "index_blog_comments_on_blog_id"
+		
+		create_table "blog_tags", :force => true do |t|
+			t.string   "name"
+			t.integer  "blog_id"
+	    t.datetime "created_at"
+	    t.datetime "updated_at"
+		end
+					
+	  add_index "blog_tags", ["blog_id"], :name => "index_blog_tags_on_blog_id"
 		
 	  create_table "blogs", :force => true do |t|
 	    t.string   "title"
@@ -98,11 +116,14 @@ class CreateBlogTables < ActiveRecord::Migration
 	    t.string   "url_identifier"
 	    t.boolean  "comments_closed"
 	    t.integer  "category_id"
+	    t.integer  "blog_set_id",   :default => 1
 	    t.boolean  "fck_created"
 	  end
 	
 	  add_index "blogs", ["category_id"], :name => "index_blogs_on_category_id"
+		add_index "blogs", ["url_identifier"], :name => "index_blogs_on_url_identifier"
+		add_index "blogs", ["blog_set_id"], :name => "index_blogs_on_blog_set_id"
 
-		BlogCategory.create(:name => "Main blog")
+		BlogSet.create(:name => "Main blog")
 	end
 end

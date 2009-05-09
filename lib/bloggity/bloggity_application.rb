@@ -33,10 +33,6 @@ module Bloggity::BloggityApplication
   	current_user && current_user.logged_in?
 	end
 	
-	def blog_writer?
-  	current_user && current_user.blog_author?
-  end	
-
   def get_page_name
   	@page_name = look_up_page_name(params[:controller], params[:action])
   end

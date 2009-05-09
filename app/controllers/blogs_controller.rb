@@ -6,8 +6,7 @@ class BlogsController < ApplicationController
   # GET /blogs.xml
   def index
 		blog_show_params = params[:blog_show_params] || {}
-		@group_id = default_group_id
-    @blogs = Blog.paginate(:all, :conditions => ["is_indexed = ? AND is_complete = ? AND blog_categories.group_id = ?", true, true, @group_id], :joins => :category, :order => "blogs.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+    @blogs = Blog.paginate(:all, :conditions => ["is_indexed = ? AND is_complete = ? AND blog_set_id = ?", true, true, @blog_set_id], :order => "blogs.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
 		set_page_title("Relentless Simplicity - The Bonanzle Blog")
     
 		respond_to do |format|
@@ -24,8 +23,7 @@ class BlogsController < ApplicationController
 
   # GET the blog as a feed
 	def feed
-		@group_id = default_group_id
-    @blogs = Blog.find(:all, :conditions => ["is_indexed = ? AND is_complete = ? AND blog_categories.group_id = ?", true, true, @group_id], :joins => :category, :order => "blogs.created_at DESC", :limit => 15)
+		@blogs = Blog.find(:all, :conditions => ["is_indexed = ? AND is_complete = ? AND blog_set_id = ?", true, true, @blog_set_id], :order => "blogs.created_at DESC", :limit => 15)
 		render :action => :feed, :layout => false
 	end
 	
@@ -43,11 +41,10 @@ class BlogsController < ApplicationController
   # GET /blogs/1.xml
   def show
 		blog_show_params = params[:blog_show_params] || {}
-		@group_id = default_group_id
-    @blogs = Blog.paginate(:all, :conditions => ["is_indexed = ? AND is_complete = ? AND blog_categories.group_id = ?", true, true, @group_id], :joins => :category, :order => "created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+		@blogs = Blog.paginate(:all, :conditions => ["is_indexed = ? AND is_complete = ? AND blog_set_id = ?", true, true, @blog_set_id], :order => "created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
 		@blog = Blog.find(:first, :conditions => ["id = ? OR url_identifier = ?", params[:id], params[:id]])
 
-		if !@blog || (!@blog.is_complete && !current_user.blog_author?)
+		if !@blog || (!@blog.is_complete && !current_user.can_blog?(@blog.blog_set_id))
 			flash[:error] = "You do not have permission to see this blog."
 			return (redirect_to( :action => 'index' ))
 		else
@@ -120,13 +117,4 @@ class BlogsController < ApplicationController
     end
   end
 
-	# Bloggity is setup such that a blog will have a category, and each category will have a group.  This is 
-	# the value of the "default group," aka the group associated with your main blogging category.
-	# What's the point of groups?
-	# If you have blogs on multiple places on your site (i.e., a main blog, a CEO blog, a collection of user  
-	# created blogs) then each of these areas can have their own set of categories and their own set of blogs. 
-	# Just give the categories different group_ids when you're creating them.
-	def default_group_id
-		0
-	end
 end

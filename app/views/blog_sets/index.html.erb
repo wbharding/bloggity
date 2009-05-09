@@ -1,0 +1,20 @@
+<h1>Listing blog_sets</h1>
+
+<table>
+  <tr>
+    <th>Url identifier</th>
+  </tr>
+
+<% @blog_sets.each do |blog_set| %>
+  <tr>
+    <td><%=h blog_set.url_identifier %></td>
+    <td><%= link_to 'Show', blog_set %></td>
+    <td><%= link_to 'Edit', edit_blog_set_path(blog_set) %></td>
+    <td><%= link_to 'Destroy', blog_set, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New blog_set', new_blog_set_path %>

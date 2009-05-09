@@ -13,6 +13,11 @@ module TaskUtil
 	# ---------------------------------------------------------------------------
 	# Ensures that CTRL-C / kill will stop tasks, even if the task is inside a begin/rescue block
 	def setup_traps
+	end
+	
+	# ---------------------------------------------------------------------------
+	# Ensures that CTRL-C / kill will stop tasks, even if the task is inside a begin/rescue block
+	def setup_traps
 		Signal.trap("TERM") { yield }
 		Signal.trap("INT") { yield }
 	end

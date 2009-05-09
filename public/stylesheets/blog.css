@@ -1,55 +1,179 @@
-#bloggityContainer .bodyBigSide {
-	padding:5px 10px;
-	width:750px;
-	float:left;
+#bloggity_container  {
 }
 
-#bloggityContainer .bodyLittleSide {
-	padding:5px 10px;
-	width:200px;
-	float:left;
+#bloggity_container table {
+	border-collapse: separate;
+	border-spacing: 0;
 }
 
-#bloggityContainer div.blogShowContainer div.postSummary {
-	color:gray;
-	background-color:#F8F8F8;
-	border-bottom:1px solid #DDDDDD;
-	border-top:1px solid #DDDDDD;
+#bloggity_container table, #bloggity_container td, #bloggity_container th {
+	vertical-align: middle;
+}
+
+#bloggity_container h1, #bloggity_container h2, #bloggity_container h3, #bloggity_container h4, #bloggity_container h5, #bloggity_container h6 {
+	font-weight: normal;
+	color: #111;
+}
+
+#bloggity_container h1 {
+	font-size: 3em;
+	line-height: 1;
+	margin-bottom: 0.5em;
+}
+
+#bloggity_container h2 {
+	font-size: 2em;
+	margin-bottom: 0.75em;
+}
+#bloggity_container h3 {
+	font-size: 1.5em;
+	line-height: 1;
+	margin-bottom: 1em;
+}
+#bloggity_container h4 {
+	font-size: 1.2em;
+	line-height: 1.25;
+	margin-bottom: 1.25em;
+	height: 1.25em;
+}
+#bloggity_container h5 {
+	font-size: 1em;
+	font-weight: bold;
+	margin-bottom: 1.5em;
+}
+#bloggity_container h6 {
+	font-size: 1em;
+	font-weight: bold;
+}
+#bloggity_container p {
+	margin: 0 0 1.5em;
+}
+#bloggity_container p img {
+	float: left;
+	margin: 1.5em 1.5em 1.5em 0;
+	padding: 0;
+}
+#bloggity_container p img.right {
+	float: right;
+	margin: 1.5em 0 1.5em 1.5em;
+}
+#bloggity_container a:focus, a:hover {
+	color: #000;
+}
+#bloggity_container a {
+	color: #009;
+	text-decoration: underline;
+}
+#bloggity_container blockquote {
+	margin: 1.5em;
+	color: #666;
+	font-style: italic;
+}
+#bloggity_container strong {
+	font-weight: bold;
+}
+#bloggity_container em {
+	font-style: italic;
+}
+#bloggity_container abbr, #bloggity_container acronym {
+	border-bottom: 1px dotted #666;
+}
+#bloggity_container address {
+	margin: 0 0 1.5em;
+	font-style: italic;
+}
+#bloggity_container pre, #bloggity_container code {
+	margin: 1.5em 0;
+	white-space: pre;
+}
+#bloggity_container pre, #bloggity_container code, #bloggity_container tt {
+	font: 1em 'andale mono' , 'lucida console' , monospace;
+	line-height: 1.5;
+}
+#bloggity_container ul {
+	list-style-type: disc;
+}
+#bloggity_container ol {
+	list-style-type: decimal;
+}
+#bloggity_container table {
+	margin-bottom: 1.4em;
+	width: 100%;
+}
+#bloggity_container th {
+	font-weight: bold;
+	background: #C3D9FF;
+}
+#bloggity_container th, #bloggity_container td {
+	padding: 4px 10px 4px 5px;
+}
+#bloggity_container tr.even td {
+	background: #E5ECF9;
+}
+#bloggity_container caption {
+	background: #eee;
+}
+#bloggity_container .small {
+	font-size: .8em;
+	margin-bottom: 1.875em;
+	line-height: 1.875em;
+}
+#bloggity_container .large {
+	font-size: 1.2em;
+	line-height: 2.5em;
+	margin-bottom: 1.25em;
+}
+#bloggity_container .hide {
+	display: none;
+}
+#bloggity_container label {
+	font-weight: bold;
+}
+#bloggity_container fieldset {
+	padding: 1.4em;
+	margin: 0 0 1.5em 0;
+	border: 1px solid #ccc;
+}
+#bloggity_container legend {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+#bloggity_container input.text, #bloggity_container input.title, #bloggity_container textarea, #bloggity_container select {
+	margin: 0.5em 0;
+	border: 1px solid #bbb;
+}
+#bloggity_container input.text:focus, #bloggity_container input.title:focus, #bloggity_container textarea:focus, #bloggity_container select:focus {
+	border: 1px solid #666;
+}
+#bloggity_container input.text, #bloggity_container input.title {
+	width: 300px;
+	padding: 5px;
+}
+#bloggity_container input.title {
+	font-size: 1.5em;
+}
+
+/* Specific styles */
+
+#bloggity_container #header {
+	background-color:#51555C;
+	background-position:left bottom;
+	background-repeat:repeat-x;
+	color:#CECFD1;
 	padding:10px;
+	width:100%;
 }
 
-#bloggityContainer #commentContainer ul.commentsBody {
-	margin:0;
-	padding:0;
-}
-
-#bloggityContainer #commentContainer ul.commentsBody li {
-	padding:5px;
-}
-
-#bloggityContainer #commentContainer ul.commentsBody li.dark {
-	color:#777777;	
-	background-color:#F8F8F8;
-	border-bottom:1px solid #DDDDDD;
-	border-top:1px solid #DDDDDD;
-}
-
-#bloggityContainer .moreBlogLink {
+#bloggity_container #side_nav {
+	background:#d4e9f7;
 	float:left;
-	font-weight:bold;
-	color:green;
+	width:300px;
+}
+	
+#bloggity_container #main_content {
+	min-width:500px;
 }
 
-#bloggityContainer .paginateContainer {
-	float:left;
-}
-
-#bloggityContainer #postList {
-	list-style-type:disc;
-	margin-left:0;
-	padding-left:5px;
-}
-
-#postList li {
-	padding-top:4px;
+#bloggity_container .subtitle {
+	font-size:14px;
 }

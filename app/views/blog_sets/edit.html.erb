@@ -1,0 +1,16 @@
+<h1>Editing blog_set</h1>
+
+<% form_for(@blog_set) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :url_identifier %><br />
+    <%= f.text_field :url_identifier %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @blog_set %> |
+<%= link_to 'Back', blog_sets_path %>
