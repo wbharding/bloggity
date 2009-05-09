@@ -1,6 +1,7 @@
 class BlogCommentsController < ApplicationController
 	helper :blogs
 	before_filter :login_required
+	before_filter :load_blog_comment, :only => [:edit, :update, :destroy]
 	before_filter :blog_writer_or_redirect, :only => [:destroy]
 	
   # POST /blogs_comments
@@ -18,19 +19,28 @@ class BlogCommentsController < ApplicationController
 	end
 
 	def edit
-		@blog_comment = current_user.blog_comments.find(params[:id])
 	end
 
 	def update
-		@blog_comment = current_user.blog_comments.find(params[:id])
 		@blog_comment.update_attributes(params[:blog_comment])
 		redirect_to(blog_named_link(@blog))
 	end
 	
   def destroy
-		c = BlogComment.find(params[:id])
-		c.destroy
+		@blog_comment.destroy
 		redirect_to(params[:referring_url])
 	end
-		
+	
+	def load_blog_comment 
+		@blog_comment = BlogComment.find(params[:id])
+		@blog = @blog_comment.try(:blog)
+		@blog_set = @blog.try(:blog_set)
+		unless current_user && @blog_comment && ((current_user == @blog_comment.user) || (current_user.can_moderate_comments?(@blog_set && @blog_set.id)))
+			flash[:error] = "You don't have permission to edit that comment"
+			redirect_to blog_named_link(@blog)
+			false
+		else
+			true
+		end
+	end
 end

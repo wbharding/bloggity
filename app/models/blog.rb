@@ -7,7 +7,7 @@
 #  title           :string(255)     
 #  body            :text            
 #  is_indexed      :boolean(1)      
-#  tags            :string(255)     
+#  tag_string      :string(255)     
 #  posted_by_id    :integer(4)      
 #  is_complete     :boolean(1)      
 #  created_at      :datetime        
@@ -24,6 +24,7 @@ class Blog < ActiveRecord::Base
   belongs_to :category, :class_name => 'BlogCategory'
 	has_many :comments, :class_name => 'BlogComment'
 	has_many :images, :class_name => 'BlogAsset'
+	has_many :tags, :class_name => 'BlogTag'
 	belongs_to :blog_set
 	
 	validates_presence_of :blog_set_id, :posted_by_id
@@ -31,7 +32,7 @@ class Blog < ActiveRecord::Base
 	
 	# Recommended... but only if you have it:
 	# xss_terminate :except => [ :body ]
-	
+	after_save :save_tags
 	before_save :update_url_identifier
 	
 	def update_url_identifier
@@ -53,6 +54,16 @@ class Blog < ActiveRecord::Base
 	def authorized_to_blog?
 		unless(self.posted_by.can_blog?(self.blog_set_id))
 			self.errors.add(:blog_set_id, "is not authorized to post to this blog")
+		end
+	end
+	
+	def save_tags
+		return if self.tag_string.blank?
+		BlogTag.delete_all(["blog_id = ?", self.id])
+		these_tags = self.tag_string.split(",")
+		these_tags.each do |tag|
+			sanitary_tag = tag.strip.chomp
+			BlogTag.create(:name => sanitary_tag, :blog_id => self.id)
 		end
 	end
 end

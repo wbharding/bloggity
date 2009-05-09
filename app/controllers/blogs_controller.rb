@@ -7,8 +7,10 @@ class BlogsController < ApplicationController
   # GET /blogs.xml
   def index
 		blog_show_params = params[:blog_show_params] || {}
-    @blogs = Blog.paginate(:all, :conditions => ["blog_set_id = ? AND is_complete = ?", @blog_set_id, true], :order => "blogs.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
-		set_page_title("Relentless Simplicity - The Bonanzle Blog")
+    search_condition = { :blog_set_id => @blog_set_id, :is_complete => true }
+		search_condition.merge!(:blog_tags => { :name => params[:tag_name] }) if params[:tag_name]
+		@blogs = Blog.paginate(:all, :conditions => search_condition, :joins => :tags, :order => "blogs.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+		set_page_title(@blog_set.title)
     
 		respond_to do |format|
       format.html # index.html.erb

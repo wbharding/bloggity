@@ -25,8 +25,12 @@
 	<% end %>
 	</p>
 	
+	<% if blog.category %>
+		<%= image_tag "bloggity/cat.gif" -%> <%= blog.category.name %>
+	<% end %>
+	
 	<% unless blog.tags.blank? %>
-		Tagged as: <%= blog.tags %>
+		<%= image_tag "bloggity/tag.gif" -%> <%= blog.tags.collect { |t| link_to(t.name, {:controller => 'blogs', :action => :index, :blog_set_id => blog.blog_set.id}.merge(:tag_name => t.name)) }.join(", ") %>
 	<% end %>
 	
 	<% if logged_in? && current_user.can_blog?(@blog_set_id) %>

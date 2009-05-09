@@ -14,7 +14,10 @@
 </head>
 <body>
 
-<%= yield  %>
+<div id="bloggity_container">
+	<%= render :partial => 'blogs/header' %>
+	<%= yield  %>
+</div>
 
 </body>
 </html>

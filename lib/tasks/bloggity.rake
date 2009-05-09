@@ -109,7 +109,7 @@ class CreateBlogTables < ActiveRecord::Migration
 	  create_table "blogs", :force => true do |t|
 	    t.string   "title"
 	    t.text     "body"
-	    t.string   "tags"
+	    t.string   "tag_string"
 	    t.integer  "posted_by_id"
 	    t.boolean  "is_complete"
 	    t.datetime "created_at"
