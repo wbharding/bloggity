@@ -47,6 +47,16 @@ module Bloggity::BloggityApplication
 		end
 	end
 	
+	def blog_comment_moderator_or_redirect
+		if @blog_set_id && current_user && current_user.can_moderate_comments?(@blog_set_id) 
+			true
+		else
+			flash[:error] = "You don't have permission to do that."
+			redirect_to :controller => "blogs" 
+			false
+		end
+	end
+	
 	def logged_in?
   	current_user && current_user.logged_in?
 	end

@@ -29,12 +29,6 @@ module Bloggity
 				end
 				
 				# Implement in your user model 
-				# This is an array of all blog sets this user can blog in
-				def blog_sets_available
-					BlogSet.find(:all)
-				end
-				
-				# Implement in your user model 
 				def can_comment?(blog_set_id = nil)
 					true
 				end
@@ -44,9 +38,24 @@ module Bloggity
 					true
 				end
 				
+				# Implement in your user model, if you care.
+				def comment_auto_approved?(blog_set_id = nil)
+					true
+				end
+				
 				# Implement in your user model 
 				def logged_in?
 					true
+				end
+				
+				# Implement in your user model 
+				def avatar_url
+					case rand(4) # avatars intended for humor purposes only. do not take these urls seriously.
+					when 0: "http://www.pistonsforum.com/images/avatars/avatar22.gif"
+					when 1: "http://static.rcgroups.com/forums/customavatars/avatar198263_1.gif"
+					when 2: "http://i.pbase.com/u12/swcoulter/upload/38201101.avatar.jpg"
+					when 3: "http://www.vistax64.com/httpdocs/customavatars/avatar70155_1.gif"
+					end
 				end
 				
       end

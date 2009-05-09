@@ -182,6 +182,11 @@
 	color:White;
 }
 
+#bloggity_container #header h1 a {
+	color:White;
+	text-decoration:none;
+}
+
 #bloggity_container #header .subtitle {
 	color:White;
 	font-weight:normal;
@@ -193,9 +198,15 @@
 	padding:15px;
 }
 
-#bloggity_container #main_content .one_blog h1 a {
+#bloggity_container #main_content .one_blog h1, #bloggity_container #main_content .one_blog h2 {
+	padding-bottom:8px;
+}
+
+#bloggity_container #main_content .one_blog h1 a, #bloggity_container #main_content .one_blog h2 a {
 	text-decoration:none;
 	color:Black;
+	font-size:28px;
+	border-bottom:1px black dashed;
 }
 
 #bloggity_container #side_nav_container {
@@ -216,3 +227,24 @@
 	font-weight:bold;
 }
 
+#bloggity_container .comments_body {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+#bloggity_container .comments_body .comment_image {
+	width:55px;
+	vertical-align:top;
+}
+
+#bloggity_container .comments_body .comment_body {
+}
+
+#bloggity_container .comments_body li.not_approved .comment_body {
+	background-color:yellow;
+}
+
+#bloggity_container .comments_body li.approved .comment_body {
+	background-color:#eee;
+}

@@ -16,6 +16,22 @@ class BlogComment < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :blog
 	attr_protected :approved
-		
+	
 	validates_presence_of :blog_id, :user_id, :comment
+	before_create :determine_approval
+	
+	# --------------------------------------------------------------------------------------
+	# --------------------------------------------------------------------------------------
+	private
+	# --------------------------------------------------------------------------------------
+	# --------------------------------------------------------------------------------------
+	
+	def determine_approval
+		self.approved = if false #self.user.comment_auto_approved?(self.blog.blog_set_id)
+			true
+		else
+			false
+		end
+		true
+	end
 end
