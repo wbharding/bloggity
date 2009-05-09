@@ -16,6 +16,6 @@
 		<div style="padding-bottom:4px;">More pages</div> <%= will_paginate(@blogs, {:form_name => :blog_show_params, :param_name => :page} ) -%>
 		<% end %>
 	<h4 class="subtitle">Other Choices</h4>
-	<div style="margin-top:4px"><%= link_to "#{image_tag "bloggity/feed-icon.png"} Subscribe to feed", { :action => :feed }, :style => 'text-decoration:none' %></div>
+	<div style="margin-top:4px"><%= link_to "#{image_tag "bloggity/feed-icon.png"} Subscribe to feed", blog_named_link(nil, :feed, :blog_set => @blog_set), :style => 'text-decoration:none' %></div>
 </div>
 		

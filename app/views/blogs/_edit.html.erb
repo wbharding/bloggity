@@ -8,7 +8,7 @@
   </p>
 
   <p>
-		<%= f.check_box :is_complete %> Is Complete? <br />
+		<%= f.check_box :is_complete %> <%= f.label :is_complete -%>? <br />
 		Category <%= f.select :category_id, BlogCategory.find(:all).collect { |bc| [bc.name, bc.id] }.insert(0, ["None", nil]) %> <%= link_to "Create new category", { :controller => 'blog_categories', :action => :new } -%><br />
 		Blog Set <%= f.select :blog_set_id, BlogSet.find(:all).collect { |bc| [bc.title, bc.id] } %> <%= link_to "Create new blog set", { :controller => 'blog_sets', :action => :new } -%><br /> 
 		Tags (separate with comma) <%= f.text_field :tag_string %>

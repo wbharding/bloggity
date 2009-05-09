@@ -1,16 +1,16 @@
 xml.instruct! :xml, :version=>"1.0"
 xml.rss(:version=>"2.0") {
 	xml.channel {
-		xml.title("Relentless Simplicity - The Bonanzle Blog")  
-		xml.link("http://www.bonanzle.com/blogs/feed")  
-		xml.description("Keep up to date with what's going on in the world of Bonanzle, Craigslist, eBay and friends.")  
+		xml.title(@blog_set.title)  
+		xml.link(url_for(:only_path => false))
+		xml.description(@blog_set.subtitle)  
 		xml.language('en-us')  
 		for blog in @blogs
 			xml.item do  
 				 xml.title(blog.title || '')  
-				 xml.link(url_for(blog))
+				 xml.link(blog_named_link(blog))
 				 xml.description(blog.body)  
-				 xml.tag(blog.tags)  
+				 xml.tag(blog.tag_string)  
 				 xml.posted_by(blog.posted_by.user_name)  
 			 end  
 		 end  

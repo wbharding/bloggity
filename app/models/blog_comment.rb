@@ -27,7 +27,7 @@ class BlogComment < ActiveRecord::Base
 	# --------------------------------------------------------------------------------------
 	
 	def determine_approval
-		self.approved = if false #self.user.comment_auto_approved?(self.blog.blog_set_id)
+		self.approved = if self.user.comment_auto_approved?(self.blog.blog_set_id)
 			true
 		else
 			false
