@@ -9,7 +9,7 @@ module Bloggity
 				
 				# Implement in your user model 
 				def display_name
-					"implement display_name in your user model"
+					"My name"
 				end
 				
 				# Implement in your user model 

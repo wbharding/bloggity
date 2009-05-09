@@ -8,9 +8,16 @@
 <% header_style ||= 'h1'
    show_comment_count ||= false %>
 	 
-<div class="blogShowContainer">
+<div class="one_blog">
 	<<%= header_style %> style="margin-bottom:0px"><%= link_to(blog.title, blog_named_link(blog)) %></<%= header_style %>>
-	<span style="color:gray;font-size:10px"><%= blog.created_at.strftime("%B %d, %Y") %></span>
+	<div class="info">
+		<%= image_tag "bloggity/time.gif" -%> Posted on <%= blog.created_at.strftime("%B %d, %Y") %>
+		<%= image_tag "bloggity/user.gif" -%> <%= link_to(blog.posted_by.display_name, blog.posted_by) -%>
+		<% if show_comment_count %>
+			<%= image_tag "bloggity/comment.gif" -%> <% if blog.comments.empty? %>No comments<% else %><%= link_to pluralize(blog.comments.size, "comment"), [blog] -%><% end %>
+		<% end %>
+	</div>
+	
 	<p><% if blog.fck_created %>
 		<%= blog.body -%>
 	<% else %>
@@ -18,16 +25,11 @@
 	<% end %>
 	</p>
 	
-	<% if show_comment_count %>
-		<p style="text-align:center;width:100%;color:gray;">Posted by <%= link_to(blog.posted_by.display_name, blog.posted_by) -%> | <%= link_to pluralize(blog.comments.size, "comment"), [blog] %> </p>
-	<% else %>
-		<div class="postSummary">Posted by <%= link_to(blog.posted_by.display_name, blog.posted_by) -%> <br />
-		<% unless blog.tags.blank? %>
-			Tagged as: <%= blog.tags %>
-		<% end %>
-		</div>
+	<% unless blog.tags.blank? %>
+		Tagged as: <%= blog.tags %>
 	<% end %>
-	<% if blog_writer? %>
+	
+	<% if logged_in? && current_user.can_blog?(@blog_set_id) %>
 		<p><%= link_to 'Edit', edit_blog_path(blog) %> or <%= link_to 'Destroy', blog, :confirm => 'Are you sure?', :method => :delete %></p>
 	<% end %>
 <br/>

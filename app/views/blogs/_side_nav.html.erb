@@ -2,12 +2,16 @@
 # -params-
 -%>
 <div id="side_nav_container" style="padding:5px 10px;">
-	<h4 class="subtitle"><strong>Recent Posts</h4>
+	<h4 class="subtitle">Recent Posts</h4>
 	<ul class="blog_list">
-	<% for blog in @blogs %>
-		<li style="padding-top:4px;"><%= link_to blog.title, blog_named_link(blog) %></li>
+	<% if @blogs.empty? %>
+		<li>None</li>
+	<% else %>
+		<% for blog in @blogs %>
+			<li><%= link_to blog.title, blog_named_link(blog) %></li>
+		<% end %>
 	<% end %>
-		</ul>
+	</ul>
 		<% if @blogs && @blogs.total_pages > 1 -%>
 			<div style="padding-bottom:4px;">More pages</div> <%= will_paginate(@blogs, {:form_name => :blog_show_params, :param_name => :page} ) -%>
 			<% end %>

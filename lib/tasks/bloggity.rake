@@ -16,9 +16,10 @@ namespace :bloggity do
 	
 	desc "Copy the stylesheets and Javascripts used natively by bloggity into host app's public directory"
 	task :bootstrap_bloggity_assets => :environment do
-		destination_dir = RAILS_ROOT + "/public/stylesheets/bloggity"
-		Engines.mirror_files_from(BLOGGITY_BASE_DIR + "/public/stylesheets", destination_dir)
-		puts "Files successfully copied to #{destination_dir}!"
+		destination_root = RAILS_ROOT + "/public/" 
+		Engines.mirror_files_from(BLOGGITY_BASE_DIR + "/public/stylesheets", destination_root + "stylesheets/bloggity")
+		Engines.mirror_files_from(BLOGGITY_BASE_DIR + "/public/images", destination_root + "images/bloggity")
+		puts "Files successfully copied!"
 	end
 	
 	desc "Copy the third party Javascripts (jquery and FCKEditor) by bloggity into host app's public directory"
@@ -65,7 +66,8 @@ class CreateBlogTables < ActiveRecord::Migration
 	  end
 		
 	  create_table "blog_sets", :force => true do |t|
-	    t.string   "name"
+	    t.string   "title"
+			t.string   "subtitle"
 			t.integer  "url_identifier"
 	    t.datetime "created_at"
 	    t.datetime "updated_at"
@@ -107,7 +109,6 @@ class CreateBlogTables < ActiveRecord::Migration
 	  create_table "blogs", :force => true do |t|
 	    t.string   "title"
 	    t.text     "body"
-	    t.boolean  "is_indexed"
 	    t.string   "tags"
 	    t.integer  "posted_by_id"
 	    t.boolean  "is_complete"
@@ -124,6 +125,6 @@ class CreateBlogTables < ActiveRecord::Migration
 		add_index "blogs", ["url_identifier"], :name => "index_blogs_on_url_identifier"
 		add_index "blogs", ["blog_set_id"], :name => "index_blogs_on_blog_set_id"
 
-		BlogSet.create(:name => "Main blog")
+		BlogSet.create(:title => "My Bloggity Blog", :subtitle => "No, this blog doesn't have a subtitle.  What's it to ya?", :url_identifier => 'main')
 	end
 end

@@ -1,13 +1,8 @@
 <%# 
 # -params-
-# blog_title: title of blog
-# blog_subtitle: subtitle of blog
 -%>
 
-<% blog_title ||= "My Bloggity Blog"
-   blog_subtitle ||= "No, this blog doesn't have a subtitle.  What's it to ya?"
-%>
 <div id="header">
-	<h1><%= blog_title -%></h1>
-	<p class="subtitle"><%= blog_subtitle -%></p>
+	<h1><%= @blog_set.title -%></h1>
+	<p class="subtitle"><%= @blog_set.subtitle -%></p>
 </div>

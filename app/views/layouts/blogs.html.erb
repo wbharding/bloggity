@@ -13,7 +13,11 @@
 </head>
 <body>
 
-<%= yield  %>
+<!-- bloggity styles namespaced by this div -->
+<div id="bloggity_container">
+	<%= render :partial => 'blogs/header' %>
+	<%= yield  %>
 
+</div> <!-- bloggity_container -->
 </body>
 </html>

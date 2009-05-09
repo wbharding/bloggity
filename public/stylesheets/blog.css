@@ -1,4 +1,14 @@
 #bloggity_container  {
+	font-family:Helvetica, Arial, Verdana, Sans-Serif;
+	font-size:12px;
+}
+
+#bloggity_container a {
+	color:#f4fbff;
+}
+
+#bloggity_container img {
+	border:0;
 }
 
 #bloggity_container table {
@@ -161,19 +171,48 @@
 	background-repeat:repeat-x;
 	color:#CECFD1;
 	padding:10px;
-	width:100%;
 }
 
-#bloggity_container #side_nav {
-	background:#d4e9f7;
-	float:left;
-	width:300px;
+#bloggity_container #header h1 {
+	font-family:"Avenir Light","Futura Light",helvetica,arial,sans-serif;
+	font-size:36px;
+	font-weight:normal;
+	line-height:1;
+	margin-bottom:9px;
+	color:White;
 }
-	
+
+#bloggity_container #header .subtitle {
+	color:White;
+	font-weight:normal;
+}
+
 #bloggity_container #main_content {
 	min-width:500px;
+	float:left;
+	padding:15px;
 }
 
-#bloggity_container .subtitle {
-	font-size:14px;
+#bloggity_container #main_content .one_blog h1 a {
+	text-decoration:none;
+	color:Black;
 }
+
+#bloggity_container #side_nav_container {
+	background:#d4e9f7;
+	float:right;
+	width:300px;
+}
+
+#bloggity_container #side_nav_container ul.blog_list {
+	margin-left:0;
+	padding-left:5px;
+	list-style-type:none;
+}
+	
+#bloggity_container .subtitle {
+	color:#666;
+	font-size:14px;
+	font-weight:bold;
+}
+

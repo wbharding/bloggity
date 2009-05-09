@@ -19,8 +19,17 @@ module Bloggity::BloggityApplication
 	  end
   end
 	
+	# TODO: Explain how this all works
+	def load_blog_set
+		if(!params[:blog_set_id] && (blog_set_url_identifier = params[:set_or_blog_id]))
+			@blog_set = BlogSet.find_by_url_identifier(blog_set_url_identifier)
+		end
+		@blog_set_id = params[:blog_set_id] || (@blog_set && @blog_set.id) || 1 # There is a default BlogSet created when the DB is bootstrapped, so we know we'll be able to fall back on this
+		@blog_set = BlogSet.find(@blog_set_id) unless @blog_set
+	end
+	
 	def blog_writer_or_redirect
-		if blog_writer? 
+		if @blog_set_id && current_user && current_user.can_blog?(@blog_set_id) 
 			true
 		else
 			flash[:error] = "You don't have permission to do that."
@@ -40,6 +49,4 @@ module Bloggity::BloggityApplication
   def set_page_title(title, options = {})
 		@page_name = title
 	end
-	
-
 end

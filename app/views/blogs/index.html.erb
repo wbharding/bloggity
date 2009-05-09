@@ -1,21 +1,17 @@
-<div id="bloggity_container">
-	<%= render :partial => 'blogs/header' %>
+<div id="main_content">
+	<%= flash[:error] %>
+	<% if logged_in? && current_user.can_blog?(@blog_set_id) %>
+		<%= link_to "New blog", { :controller => 'blogs', :action => :new, :blog_set_id => @blog_set_id } %>
+	<% end %>
+
+	<% for blog in @blogs %>
+		<%= render :partial => 'show', :locals => { :blog => blog, :header_style => 'h2', :show_comment_count => true } %>
+	<% end %>
 	
-	<div id="main_content">
-		<%= flash[:error] %>
-		<% if blog_writer? %>
-			<%= link_to "New blog", new_blog_path %>
-		<% end %>
-	
-		<% for blog in @blogs %>
-			<%= render :partial => 'show', :locals => { :blog => blog, :header_style => 'h2', :show_comment_count => true } %>
-		<% end %>
-		
-		<% if @blogs && @blogs.total_pages > 1 -%>
-			<div>See more blogs &nbsp;&nbsp;</div>
-			<div class="paginate_container"><%= will_paginate(@blogs, {:form_name => :blog_show_params, :param_name => :page} ) -%></div>
-		<% end %>
-	</div>
-	
-	<%= render :partial => 'blogs/side_nav' %>
+	<% if @blogs && @blogs.total_pages > 1 -%>
+		<div>See more blogs &nbsp;&nbsp;</div>
+		<div class="paginate_container"><%= will_paginate(@blogs, {:form_name => :blog_show_params, :param_name => :page} ) -%></div>
+	<% end %>
 </div>
+
+<%= render :partial => 'blogs/side_nav' %>

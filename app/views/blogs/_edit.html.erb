@@ -1,0 +1,57 @@
+<br /><br />
+<%= error_messages_for :blog %>
+<% form_for(@blog, :url => { :controller => 'blogs', :action => :update, :id => @blog, :blog_set_id => @blog_set_id }) do |f| %>
+  <p>New Blog Title: &nbsp;<%= f.text_field :title, :style => "font-size:20px" %></p>
+
+  <p>Body<br />
+    <%= f.text_area :body, :cols => 80 %>
+  </p>
+
+  <p>
+		<%= f.check_box :is_complete %> Is Complete? <br />
+		Category <%= f.select :category_id, BlogCategory.find(:all).collect { |bc| [bc.name, bc.id] }.insert(0, ["None", nil]) %> <%= link_to "Create new category", { :controller => 'blog_categories', :action => :new } -%><br />
+		Blog Set <%= f.select :blog_set_id, BlogSet.find(:all).collect { |bc| [bc.title, bc.id] } %> <%= link_to "Create new blog set", { :controller => 'blog_sets', :action => :new } -%><br /> 
+		Tags (separate with comma) <%= f.text_field :tags %>
+	</p>
+
+	<%= f.submit "Save" %>
+<% end %>
+
+<br /><h4>Upload Images</h4>
+<% remote_form_for(:blog_asset, :url => { :controller => "blogs", :action => :create_asset }, 
+		:html => { :method => :post, :id => 'uploadForm', :multipart => true }) do |f| -%>
+	<%= f.hidden_field :blog_id, :value => @blog.id %>
+	<label>Upload a file:</label> <%= f.file_field :uploaded_data %>
+<% end %>
+
+<% javascript_tag do %>
+	jQuery(document).ready(function($) 
+	{
+		var fckEditor = new FCKeditor('blog[body]');
+		fckEditor.BasePath = "/javascripts/bloggity/fckeditor/";
+		fckEditor.ReplaceTextarea();
+		
+		$('#uploadForm input').change(function(){
+				$(this).parent().ajaxSubmit({
+						beforeSubmit: function(a,f,o) {
+							o.dataType = 'json';
+						},
+						complete: function(XMLHttpRequest, textStatus) {
+							new_image = $("<img>").attr('src', XMLHttpRequest.responseText);
+							new_text = $("<div>").html(XMLHttpRequest.responseText);
+							new_container = $("<div>");
+							$('#blogInnerImageContainer').append(new_container);
+							new_container.append(new_image).append(new_text);
+						},
+						success: function(data) { 
+							//afterSuccessfulUpload(data); 
+						}
+					});
+			});
+		});
+<% end %>
+
+	<div id="blogImageContainer">
+		<%= render :partial => "blog_images", :locals => { :blog_images => @blog.images } -%>
+	</div>
+<%= link_to 'Back', blogs_path %>
