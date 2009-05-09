@@ -24,6 +24,7 @@ class Blog < ActiveRecord::Base
   belongs_to :category, :class_name => 'BlogCategory'
 	has_many :comments, :class_name => 'BlogComment'
 	has_many :images, :class_name => 'BlogAsset'
+	belongs_to :blog_set
 	
 	validates_presence_of :blog_set_id, :posted_by_id
 	validate :authorized_to_blog?

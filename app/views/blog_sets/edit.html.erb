@@ -1,8 +1,16 @@
-<h1>Editing blog_set</h1>
+<h1>Editing Blog Set</h1>
 
 <% form_for(@blog_set) do |f| %>
   <%= f.error_messages %>
 
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :subtitle %><br />
+    <%= f.text_field :subtitle %>
+  </p>
   <p>
     <%= f.label :url_identifier %><br />
     <%= f.text_field :url_identifier %>

@@ -4,14 +4,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title>BlogSets: <%= controller.action_name %></title>
-  <%= stylesheet_link_tag 'scaffold' %>
+  <title><%= @page_name || "My Bloggity Blog" %></title>
+  <%= stylesheet_link_tag 'bloggity/blog' %>  		
 </head>
 <body>
 
-<p style="color: green"><%= flash[:notice] %></p>
-
-<%= yield %>
+<!-- bloggity styles namespaced by this div -->
+<div id="bloggity_container">
+	<%= render :partial => 'blogs/header' %>
+	<%= yield %>
+</div>
 
 </body>
 </html>

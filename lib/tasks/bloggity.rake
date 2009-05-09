@@ -68,7 +68,7 @@ class CreateBlogTables < ActiveRecord::Migration
 	  create_table "blog_sets", :force => true do |t|
 	    t.string   "title"
 			t.string   "subtitle"
-			t.integer  "url_identifier"
+			t.string   "url_identifier"
 	    t.datetime "created_at"
 	    t.datetime "updated_at"
 	  end
