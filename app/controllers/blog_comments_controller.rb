@@ -1,4 +1,5 @@
 class BlogCommentsController < ApplicationController
+	helper :blogs
 	before_filter :login_required
 	before_filter :blog_writer_or_redirect, :only => [:destroy]
 	
@@ -8,16 +9,11 @@ class BlogCommentsController < ApplicationController
 		@blog_comment = BlogComment.new(params[:blog_comment])
 		@blog_comment.user_id = current_user.id
 		
-		respond_to do |format|
-			if @blog_comment.save
-				@blog = @blog_comment.blog
-				flash[:notice] = 'Blog comment was successfully created.'
-				format.html { redirect_to(@blog) }
-				format.xml  { render :xml => @blog, :status => :created, :location => @blog }
-			else
-				format.html { render :action => "new" }
-				format.xml  { render :xml => @blog.errors, :status => :unprocessable_entity }
-			end
+		if @blog_comment.save
+			@blog = @blog_comment.blog
+			redirect_to(blog_named_link(@blog))
+		else
+			render :action => "new"
 		end
 	end
 
@@ -28,11 +24,11 @@ class BlogCommentsController < ApplicationController
 	def update
 		@blog_comment = current_user.blog_comments.find(params[:id])
 		@blog_comment.update_attributes(params[:blog_comment])
-		redirect_to(:controller => 'blogs', :action => :show, :id => @blog_comment.blog.id)
+		redirect_to(blog_named_link(@blog))
 	end
 	
   def destroy
-		c = Comment.find(params[:id])
+		c = BlogComment.find(params[:id])
 		c.destroy
 		redirect_to(params[:referring_url])
 	end

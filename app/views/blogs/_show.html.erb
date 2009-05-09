@@ -14,7 +14,7 @@
 		<%= image_tag "bloggity/time.gif" -%> Posted on <%= blog.created_at.strftime("%B %d, %Y") %>
 		<%= image_tag "bloggity/user.gif" -%> <%= link_to(blog.posted_by.display_name, blog.posted_by) -%>
 		<% if show_comment_count %>
-			<%= image_tag "bloggity/comment.gif" -%> <% if blog.comments.empty? %>No comments<% else %><%= link_to pluralize(blog.comments.size, "comment"), [blog] -%><% end %>
+			<%= image_tag "bloggity/comment.gif" -%> <% if blog.comments.empty? %>No comments<% else %><%= link_to pluralize(blog.comments.size, "comment"), blog_named_link(blog) -%><% end %>
 		<% end %>
 	</div>
 	
@@ -30,7 +30,7 @@
 	<% end %>
 	
 	<% if logged_in? && current_user.can_blog?(@blog_set_id) %>
-		<p><%= link_to 'Edit', edit_blog_path(blog) %> or <%= link_to 'Destroy', blog, :confirm => 'Are you sure?', :method => :delete %></p>
+		<p><%= link_to 'Edit', blog_named_link(blog, :edit) %> or <%= link_to 'Destroy', blog_named_link(blog, :destroy), :confirm => 'Are you sure?', :method => :delete %></p>
 	<% end %>
 <br/>
 </div>

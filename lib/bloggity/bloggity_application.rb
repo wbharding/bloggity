@@ -8,6 +8,15 @@ module Bloggity::BloggityApplication
 		User.find(1)
 	end
 	
+	def blog_named_link(blog, the_action = :show)
+		case the_action
+		when :show: "/blogs/#{blog.blog_set.url_identifier}/#{blog.url_identifier}"
+		when :index: "/blogs/#{blog.blog_set.url_identifier}"
+		else
+			{ :controller => 'blogs', :action => the_action, :blog_set_id => blog.blog_set_id, :id => blog.id }
+		end
+	end
+	
 	# Implement in your application
 	def login_required
 		if current_user
@@ -21,7 +30,7 @@ module Bloggity::BloggityApplication
 	
 	# TODO: Explain how this all works
 	def load_blog_set
-		if(!params[:blog_set_id] && (blog_set_url_identifier = params[:set_or_blog_id]))
+		if(!params[:blog_set_id] && (blog_set_url_identifier = params[:blog_url_id_or_id]))
 			@blog_set = BlogSet.find_by_url_identifier(blog_set_url_identifier)
 		end
 		@blog_set_id = params[:blog_set_id] || (@blog_set && @blog_set.id) || 1 # There is a default BlogSet created when the DB is bootstrapped, so we know we'll be able to fall back on this

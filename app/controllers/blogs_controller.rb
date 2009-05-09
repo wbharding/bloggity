@@ -19,7 +19,7 @@ class BlogsController < ApplicationController
 	def close
 		@blog = Blog.find(params[:id])
 		@blog.update_attribute(:comments_closed, true)
-		redirect_to( :action => :show, :id => @blog )
+		redirect_to blog_named_link(@blog)
 	end
 
   # GET the blog as a feed
@@ -63,7 +63,7 @@ class BlogsController < ApplicationController
   def new
     @blog = Blog.new(:posted_by_id => current_user, :fck_created => true, :blog_set_id => @blog_set_id)
 		@blog.save # save it before we start editing it so we can know it's ID when it comes time to add images/assets
-		redirect_to(:controller => 'blogs', :action => :edit, :id => @blog)
+		redirect_to blog_named_link(@blog, :edit)
   end
 
   # GET /blogs/1/edit
@@ -78,9 +78,9 @@ class BlogsController < ApplicationController
 	  @blog.posted_by = current_user
 
 		if(@blog.save)
-			redirect_to(@blog)
+			redirect_to blog_named_link(@blog)
 		else
-			render :action => "new"
+			render blog_named_link(@blog, :new)
 		end
   end
 
@@ -89,15 +89,10 @@ class BlogsController < ApplicationController
   def update
     @blog = Blog.find(params[:id])
 
-    respond_to do |format|
-			if @blog.update_attributes(params[:blog])
-        flash[:notice] = 'Blog was successfully updated.'
-        format.html { redirect_to(@blog) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @blog.errors, :status => :unprocessable_entity }
-      end
+    if @blog.update_attributes(params[:blog])
+      redirect_to blog_named_link(@blog)
+    else
+      render blog_named_link(@blog, :edit)
     end
   end
 
@@ -105,11 +100,7 @@ class BlogsController < ApplicationController
   # DELETE /blogs/1.xml
   def destroy
     @blog.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(blogs_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to(blog_named_link(@blog, :index))
   end
 
 	# --------------------------------------------------------------------------------------
