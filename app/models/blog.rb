@@ -35,12 +35,6 @@ class Blog < ActiveRecord::Base
 	after_save :save_tags
 	before_save :update_url_identifier
 	
-	def update_url_identifier
-		return if self.title.blank?
-		self.url_identifier = self.title.strip.gsub(/\W/, '_')
-		true
-	end
-	
 	def comments_closed?
 		self.comments_closed
 	end
@@ -50,6 +44,14 @@ class Blog < ActiveRecord::Base
 	private
 	# --------------------------------------------------------------------------------------
 	# --------------------------------------------------------------------------------------
+	
+	def update_url_identifier
+		# We won't update URL identifier if ther'es no title, or if this blog was already published
+		# with a URL identifier (don't want links to get broken)
+		return if self.title.blank? || (self.is_complete && !self.url_identifier.blank?)
+		self.url_identifier = self.title.strip.gsub(/\W/, '_')
+		true
+	end
 	
 	def authorized_to_blog?
 		unless(self.posted_by && self.posted_by.can_blog?(self.blog_set_id))

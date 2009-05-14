@@ -33,7 +33,6 @@ class BlogsController < ApplicationController
 	# Upload a blog asset
 	def create_asset
 		image_params = params[:blog_asset] || {}
-		debugger
 		@image = BlogAsset.new(image_params)
 		@image.blog_id = image_params[:blog_id] # Can't mass-assign attributes of attachment_fu, so we'll set it manually here
 		@image.save!
