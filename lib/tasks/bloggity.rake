@@ -69,6 +69,7 @@ class CreateBlogTables < ActiveRecord::Migration
 	    t.string   "title"
 			t.string   "subtitle"
 			t.string   "url_identifier"
+			t.string   "stylesheet"
 	    t.datetime "created_at"
 	    t.datetime "updated_at"
 	  end

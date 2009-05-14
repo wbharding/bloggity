@@ -16,6 +16,10 @@
     <%= f.text_field :url_identifier %>
   </p>
   <p>
+    <%= f.label :stylesheet %> (leave blank to use default)<br />
+    <%= f.text_field :stylesheet %>
+  </p>
+	<p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>

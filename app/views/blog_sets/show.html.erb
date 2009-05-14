@@ -10,7 +10,10 @@
   <b>Url identifier:</b>
   <%=h @blog_set.url_identifier %>
 </p>
-
+<p>
+  <b>Stylesheet:</b>
+	<%=h @blog_set.stylesheet %>
+</p>
 
 <%= link_to 'Edit', edit_blog_set_path(@blog_set) %> |
 <%= link_to 'Back', blog_sets_path %>

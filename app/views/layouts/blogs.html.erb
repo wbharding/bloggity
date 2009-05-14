@@ -5,7 +5,11 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title><%= @page_name || "My Bloggity Blog" %></title>
-  <%= stylesheet_link_tag 'bloggity/blog' %>  		
+  <% if @blog_set && !@blog_set.stylesheet.blank? %>
+		<%= stylesheet_link_tag @blog_set.stylesheet %>
+	<% else %>
+		<%= stylesheet_link_tag 'bloggity/blog' %>
+	<% end %>
 	
 	<%= javascript_include_tag 'bloggity/jquery' %>
 	<%= javascript_include_tag 'bloggity/jquery-form' %>
