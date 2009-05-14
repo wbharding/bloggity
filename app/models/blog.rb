@@ -52,8 +52,8 @@ class Blog < ActiveRecord::Base
 	# --------------------------------------------------------------------------------------
 	
 	def authorized_to_blog?
-		unless(self.posted_by.can_blog?(self.blog_set_id))
-			self.errors.add(:blog_set_id, "is not authorized to post to this blog")
+		unless(self.posted_by && self.posted_by.can_blog?(self.blog_set_id))
+			self.errors.add(:posted_by_id, "is not authorized to post to this blog")
 		end
 	end
 	

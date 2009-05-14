@@ -12,11 +12,18 @@ require 'ruby-debug'
 Debugger.start
 
 FIXTURE_DIR = File.dirname(__FILE__) + '/fixtures'
-BLOGGITY_TABLES = ["blogs", "blog_comments"]
+BLOGGITY_TABLES = ["blogs", "blog_comments", "blog_sets", "users"]
 file = FIXTURE_DIR + "/schema.rb"
 load(file)
 
 @fixtures = Fixtures.create_fixtures(FIXTURE_DIR, BLOGGITY_TABLES)
-	
+@built_fixtures = {}
+BLOGGITY_TABLES.each_with_index { |table, idx| @built_fixtures[table] = @fixtures[idx] }
+BLOGGITY_FIXTURES = @built_fixtures
+
+def get_fixture(class_name, record_name)
+	class_name.find(BLOGGITY_FIXTURES[class_name.table_name][record_name]["id"])
+end
+
 #require File.join(File.dirname(__FILE__), 'fixtures/attachment')
 #require File.join(File.dirname(__FILE__), 'base_attachment_tests')

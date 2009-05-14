@@ -10,15 +10,24 @@ ActiveRecord::Schema.define do
     t.integer "height"
   end
 	
-  create_table "blog_categories", :force => true do |t|
-    t.string   "name"
-		t.integer  "parent_id"
-    t.integer  "group_id",   :default => 0
+  create_table "blog_sets", :force => true do |t|
+    t.string   "title"
+		t.string   "subtitle"
+		t.string   "url_identifier"
+		t.string   "stylesheet"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 	
-  create_table "blog_comments", :force => true do |t|
+  create_table "blog_categories", :force => true do |t|
+    t.string   "name"
+		t.integer  "parent_id"
+    t.integer  "blog_set_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+	
+	create_table "blog_comments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "blog_id"
     t.text     "comment"
@@ -26,12 +35,18 @@ ActiveRecord::Schema.define do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+  
+	create_table "blog_tags", :force => true do |t|
+		t.string   "name"
+		t.integer  "blog_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+	end
 	
   create_table "blogs", :force => true do |t|
     t.string   "title"
     t.text     "body"
-    t.boolean  "is_indexed"
-    t.string   "tags"
+    t.string   "tag_string"
     t.integer  "posted_by_id"
     t.boolean  "is_complete"
     t.datetime "created_at"
@@ -39,6 +54,9 @@ ActiveRecord::Schema.define do
     t.string   "url_identifier"
     t.boolean  "comments_closed"
     t.integer  "category_id"
+    t.integer  "blog_set_id",   :default => 1
     t.boolean  "fck_created"
   end
+	
+  BlogSet.create(:title => "My Bloggity Blog", :subtitle => "No, this blog doesn't have a subtitle.  What's it to ya?", :url_identifier => 'main')
 end

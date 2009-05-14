@@ -65,3 +65,7 @@ map.connect 'blog/:id', :controller => 'blogs', :action => 'show'
 
 ***** Setting up user permissions *****
 
+Testing
+=======
+
+bloggity:test:blog

@@ -1,4 +1,4 @@
-require 'bloggity/page_names'
+require 'bloggity/bloggity_page_names'
 
 module Bloggity::BloggityApplication
 	include BloggityPageNames
