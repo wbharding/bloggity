@@ -137,7 +137,6 @@
 	display: none;
 }
 #bloggity_container label {
-	font-weight: bold;
 }
 #bloggity_container fieldset {
 	padding: 1.4em;
@@ -247,4 +246,11 @@
 
 #bloggity_container .comments_body li.approved .comment_body {
 	background-color:#eee;
+}
+
+#bloggity_container #inner_asset_container .uploaded_asset {
+	background:#eee;
+	border:1px solid #ccc;
+	padding:10px;
+	margin:3px 0;
 }

@@ -4,7 +4,7 @@
 	<% end %>
 
 	<%= flash[:error] %>
-	<% if logged_in? && current_user.can_blog?(@blog_set_id) %>
+	<% if blog_logged_in? && current_user.can_blog?(@blog_set_id) %>
 		<%= link_to "New blog", { :controller => 'blogs', :action => :new, :blog_set_id => @blog_set_id } %>
 	<% end %>
 

@@ -4,6 +4,7 @@ module Bloggity
 
     def self.included(base)
       base.class_eval do
+				# Copy these to your user model
 				has_many :blogs
 				has_many :blog_comments
 				
@@ -29,17 +30,12 @@ module Bloggity
 				end
 				
 				# Implement in your user model 
-				def can_comment?(blog_set_id = nil)
-					true
-				end
-				
-				# Implement in your user model 
-				def can_moderate_comments?(blog_set_id = nil)
+				def can_moderate_blog_comments?(blog_set_id = nil)
 					true
 				end
 				
 				# Implement in your user model, if you care.
-				def comment_auto_approved?(blog_set_id = nil)
+				def blog_comment_auto_approved?(blog_set_id = nil)
 					true
 				end
 				
@@ -49,7 +45,7 @@ module Bloggity
 				end
 				
 				# Implement in your user model 
-				def avatar_url
+				def blog_avatar_url
 					case rand(4) # avatars intended for humor purposes only. do not take these urls seriously.
 					when 0: "http://www.pistonsforum.com/images/avatars/avatar22.gif"
 					when 1: "http://static.rcgroups.com/forums/customavatars/avatar198263_1.gif"

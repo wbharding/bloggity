@@ -1,20 +1,11 @@
 require 'bloggity/page_names'
 
 module Bloggity::BloggityApplication
-	include PageNames
+	include BloggityPageNames
 	
 	# Implement in your application
 	def current_user
 		User.find(1)
-	end
-	
-	def blog_named_link(blog, the_action = :show)
-		case the_action
-		when :show: "/blogs/#{blog.blog_set.url_identifier}/#{blog.url_identifier}"
-		when :index: "/blogs/#{blog.blog_set.url_identifier}"
-		else
-			{ :controller => 'blogs', :action => the_action, :blog_set_id => blog.blog_set_id, :id => blog.id }
-		end
 	end
 	
 	# Implement in your application
@@ -27,6 +18,19 @@ module Bloggity::BloggityApplication
 	    false
 	  end
   end
+	
+	def blog_logged_in?
+		current_user && current_user.logged_in?
+	end
+	
+	def blog_named_link(blog, the_action = :show)
+		case the_action
+		when :show: "/blogs/#{blog.blog_set.url_identifier}/#{blog.url_identifier}"
+		when :index: "/blogs/#{blog.blog_set.url_identifier}"
+		else
+			{ :controller => 'blogs', :action => the_action, :blog_set_id => blog.blog_set_id, :id => blog.id }
+		end
+	end
 	
 	# TODO: Explain how this all works
 	def load_blog_set
@@ -48,7 +52,7 @@ module Bloggity::BloggityApplication
 	end
 	
 	def blog_comment_moderator_or_redirect
-		if @blog_set_id && current_user && current_user.can_moderate_comments?(@blog_set_id) 
+		if @blog_set_id && current_user && current_user.can_moderate_blog_comments?(@blog_set_id) 
 			true
 		else
 			flash[:error] = "You don't have permission to do that."
@@ -57,15 +61,8 @@ module Bloggity::BloggityApplication
 		end
 	end
 	
-	def logged_in?
-  	current_user && current_user.logged_in?
-	end
-	
-  def get_page_name
+  def get_bloggity_page_name
   	@page_name = look_up_page_name(params[:controller], params[:action])
   end
   
-  def set_page_title(title, options = {})
-		@page_name = title
-	end
 end

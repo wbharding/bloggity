@@ -33,7 +33,7 @@
 		<%= image_tag "bloggity/tag.gif" -%> <%= blog.tags.collect { |t| link_to(t.name, {:controller => 'blogs', :action => :index, :blog_set_id => blog.blog_set.id}.merge(:tag_name => t.name)) }.join(", ") %>
 	<% end %>
 	
-	<% if logged_in? && current_user.can_blog?(@blog_set_id) %>
+	<% if blog_logged_in? && current_user.can_blog?(@blog_set_id) %>
 		<p><%= link_to 'Edit', blog_named_link(blog, :edit) %> or <%= link_to 'Destroy', blog_named_link(blog, :destroy), :confirm => 'Are you sure?', :method => :delete %></p>
 	<% end %>
 <br/>

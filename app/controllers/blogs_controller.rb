@@ -1,5 +1,5 @@
 class BlogsController < ApplicationController
-  before_filter :get_page_name
+  before_filter :get_bloggity_page_name
 	before_filter :load_blog
 	before_filter :blog_writer_or_redirect, :except => [:close, :index, :show, :feed]
 	
@@ -10,7 +10,7 @@ class BlogsController < ApplicationController
     search_condition = { :blog_set_id => @blog_set_id, :is_complete => true }
 		search_condition.merge!(:blog_tags => { :name => params[:tag_name] }) if params[:tag_name]
 		@blogs = Blog.paginate(:all, :select => "DISTINCT blogs.*", :conditions => search_condition, :joins => :tags, :order => "blogs.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
-		set_page_title(@blog_set.title)
+		@page_name = @blog_set.title
     
 		respond_to do |format|
       format.html # index.html.erb
@@ -51,7 +51,7 @@ class BlogsController < ApplicationController
 			flash[:error] = "You do not have permission to see this blog."
 			return (redirect_to( :action => 'index' ))
 		else
-			set_page_title(@blog.title)
+			@page_name = @blog.title
 		end
 	
     respond_to do |format|

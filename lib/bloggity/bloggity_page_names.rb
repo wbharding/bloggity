@@ -1,4 +1,4 @@
-module PageNames
+module BloggityPageNames
 	
 	# Define non-standard page names to be used in title bar and breadcrumbs
 	# If an entry isn't in this list, we'll assume it's name is "#{action_name} #{controller_name}"

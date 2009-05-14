@@ -9,14 +9,14 @@
 	<% if responses > 0 %>
 		<ul class="comments_body">
 			<% blog.comments.each do |comment| %>
-				<% next unless comment.approved || (logged_in? && current_user.can_moderate_comments?(blog.blog_set_id)) %>
+				<% next unless comment.approved || (blog_logged_in? && current_user.can_moderate_blog_comments?(blog.blog_set_id)) %>
 				<%= render :partial => 'blog_comments/show', :locals => { :comment => comment } %>
 			<% end %>
 		</ul>
 	<% else %>
 		<p>No comments have been made on this blog.</p>
 	<% end %>
-	<% if logged_in? %>
+	<% if blog_logged_in? %>
 		<% if blog.comments_closed? %>
 			<p>Comments have been closed for this blog.</p>
 		<% else %>

@@ -1,0 +1,67 @@
+Bloggity
+========
+
+Bloggity is a plugin by Bill Harding (http://www.williambharding.com/blog/) that aims to make it brain-dead simple to integrate a fully-featured blog into your Rails site as a plugin.
+
+Bloggity functionality
+======================
+
+Bloggity 1.0 sports the following featureset:
+
+  * Create and maintain one or more blogs in a Rails app (e.g., a main blog, a CEO blog, and user blogs)
+  * URLs formatted using blog titles for better SEO (e.g., http://mysite.com/blogs/founder/this_is_my_blog_title)
+  * Wordpress-like WYSIWYG editor to write blogs in (requires FCKEditor, which is bundled with the plugin)
+  * Separate configurable permissions for writing, commenting on, and moderating comments for blogs
+  * Pre-built AJAX uploading for blog assets of whatever sort.  Insert assets into your blog in whatever manner you choose
+  * Ability to use custom stylesheets on a per-blogset basis (i.e., the Founder's blog can use different styling than the user blogs)
+  * RSS 2.0 feeds
+  * Ability to tag blog posts, filter blogs by tag
+  * Ability to categorize blog posts
+  * Blogs can be saved in draft mode before publishing
+  * Bloggity maintains its own routes, controllers, models, and views.  Bloggity was designed to be as "drag and drop" as possible.  You shouldn't need to manually copy or add anything to your existing app (though the rake install task will copy a couple assets for you into /public/*/bloggity directories)
+  * Model & controller test suite   
+
+Installation
+============
+
+Full installation instructions (along with the ongoing Bloggity discussion) can be found at .  Here's the gist.
+
+Prerequisites:  Bloggity uses attachment_fu, will_paginate, and the engines plugin.  In Rails 2.3, the Engines plugin shouldn't be necessary, but the tasks that copy assets into your public directories use Engines, so if you don't instsall it you will need to copy those assets manually.
+
+Tested versions of all plugins are included in the bloggity/tested_plugins directory.
+
+To use FCKEditor and the AJAX file uploading, you will also need jQuery, the jQuery form plugin and FCKEditor.  See instructions below on automatically adding them to your app. 
+
+The gist:
+
+1.  Grab Bloggity, put it in vendor/plugins/bloggity
+2.  Run "rake bloggity:bootstrap_db" from your application's base directory
+3.  Run "rake bloggity:bootstrap_bloggity_assets" to copy the images and stylesheets used with bloggity into your apps /public/stylesheets/bloggity and /public/images/bloggity directories.  
+4.  Run "rake bloggity:bootstrap_third_party_assets" to copy FCKEditor and jQuery into your "/public/javascripts/bloggity" directory.  This is not required, but the WYSIWYG editor and asset uploading won't work without it. 
+5.  Take a gander at bloggity/lib/bloggity/user_init.rb.  This shows the methods that bloggity will use to interface with your user model (for blog permissions and such).  Implement these in a sensible way in your user model.  Don't forget to copy the blog associations into your user.   
+6.  There are two methods in bloggity/lib/bloggity/bloggity_application.rb:  current_user and require_login.  Implement these in your application_controller.rb if you haven't already.
+
+And you're done!
+
+Usage
+=====
+
+***** Creating blogs and blog sets ***** 
+
+My default, all blogs are members of a "BlogSet," which, as its name suggests, are a set of blogs.  This allows you to maintain various blogs (e.g., CEO blog, main blog, user blogs) within the same application.  The URL to a given blog is the combination of the BlogSet and the blog name.  So...
+
+To create a new blog in the default (main) blogset:
+http://localhost:3000/blog_sets/1/blogs/new
+
+To create a new blog set:
+http://localhost:3000/blog_sets/new
+ 
+To view a blog entitled "My first blog" that was posted to the default (main) blogset:
+http://localhost:3000/blogs/main/My_first_blog
+
+If you only plan to use one blog set, and would like your URLs to simply be formatted as http://localhost:3000/blog/My_first_blog, you can add the following line to your routing file:
+
+map.connect 'blog/:id', :controller => 'blogs', :action => 'show'
+
+***** Setting up user permissions *****
+

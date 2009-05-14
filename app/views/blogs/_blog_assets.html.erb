@@ -1,0 +1,12 @@
+<%# 
+# -params-
+# 
+-%>
+
+<br />
+<div id="inner_asset_container">
+<% blog_assets.each do |asset| %>
+	<div class="uploaded_asset"><%= image_tag asset.public_filename -%><br /><div class="asset_filename">Asset file path: <%= link_to asset.public_filename, asset.public_filename -%></div></div>
+<% end %>
+</div>
+<div style="clear:both"></div>
