@@ -25,12 +25,6 @@ class BlogsController < ApplicationController
 		redirect_to blog_named_link(@blog)
 	end
 
-  # GET the blog as a feed
-	def feed
-		@blogs = Blog.find(:all, :conditions => ["blog_set_id = ? AND is_complete = ?", @blog_set_id, true], :order => "blogs.created_at DESC", :limit => 15)
-		render :action => :feed, :layout => false
-	end
-	
 	# Upload a blog asset
 	def create_asset
 		image_params = params[:blog_asset] || {}

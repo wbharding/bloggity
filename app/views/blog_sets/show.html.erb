@@ -14,6 +14,11 @@
   <b>Stylesheet:</b>
 	<%=h @blog_set.stylesheet %>
 </p>
+<p>
+  <b>Feedburner URL</b>
+	<%= @blog_set.feedburner_url %>
+</p>
+	
 
 <%= link_to 'Edit', edit_blog_set_path(@blog_set) %> |
 <%= link_to 'Back', blog_sets_path %>

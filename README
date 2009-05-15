@@ -24,7 +24,7 @@ Bloggity 1.0 sports the following featureset:
 Installation
 ============
 
-Full installation instructions (along with the ongoing Bloggity discussion) can be found at .  Here's the gist.
+Full installation instructions (along with the ongoing Bloggity discussion) can be found at http://www.williambharding.com/blog/rails/bloggity-an-evolving-rails-blog-plugin/.  Here's the gist.
 
 Prerequisites:  Bloggity uses attachment_fu, will_paginate, and the engines plugin.  In Rails 2.3, the Engines plugin shouldn't be necessary, but the tasks that copy assets into your public directories use Engines, so if you don't instsall it you will need to copy those assets manually.
 
@@ -63,6 +63,8 @@ If you only plan to use one blog set, and would like your URLs to simply be form
 
 map.connect 'blog/:id', :controller => 'blogs', :action => 'show'
 
+That would probably work... :)
+
 ***** Setting Up User Permissions *****
 
 All of the permissions for whether a user can post a blog, post a comment, moderate comments, and whether their comments are automatically approved are set by methods in your user.  Each permission takes an optional blog_set_id parameter, so you can configure permissions relative to a given BlogSet if you choose.  
@@ -99,4 +101,6 @@ Todo
 
 Acknowledgements
 ================
+
+Many thanks to Robert Graff and the team at Goldstar (http://www.goldstar.com) for sponsoring Bloggity version 1.0. 
 

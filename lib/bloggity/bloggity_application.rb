@@ -1,7 +1,9 @@
 require 'bloggity/bloggity_page_names'
+require 'bloggity/bloggity_url_helper'
 
 module Bloggity::BloggityApplication
 	include BloggityPageNames
+	include BloggityUrlHelper
 	
 	# Implement in your application
 	def current_user
@@ -23,16 +25,6 @@ module Bloggity::BloggityApplication
 		current_user && current_user.logged_in?
 	end
 	
-	def blog_named_link(blog, the_action = :show)
-		case the_action
-		when :show: "/blogs/#{blog.blog_set.url_identifier}/#{blog.url_identifier}"
-		when :index: "/blogs/#{blog.blog_set.url_identifier}"
-		else
-			{ :controller => 'blogs', :action => the_action, :blog_set_id => blog.blog_set_id, :id => blog.id }
-		end
-	end
-	
-	# TODO: Explain how this all works
 	def load_blog_set
 		if(!params[:blog_set_id] && (blog_set_url_identifier = params[:blog_url_id_or_id]))
 			@blog_set = BlogSet.find_by_url_identifier(blog_set_url_identifier)

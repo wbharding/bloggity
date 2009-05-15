@@ -1,5 +1,8 @@
 class BlogSetsController < ApplicationController
-  # GET /blog_sets
+  before_filter :get_bloggity_page_name
+	before_filter :load_blog_set, :only => [:feed]
+	
+	# GET /blog_sets
   # GET /blog_sets.xml
   def index
     @blog_sets = BlogSet.all
@@ -82,5 +85,18 @@ class BlogSetsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+	
+  # GET the blog as a feed
+	def feed
+		@blog_set = BlogSet.find(:first, :conditions => ["url_identifier = ? OR id = ?", params[:id], params[:id]])
+		unless @blog_set
+			flash[:error] = "Couldn't find that feed."
+			redirect_to(:controller => 'blogs', action => :index)
+			return
+		end
+		@blog_set_id = @blog_set.id
+		@blogs = Blog.find(:all, :conditions => ["blog_set_id = ? AND is_complete = ?", @blog_set_id, true], :order => "blogs.created_at DESC", :limit => 15)
+		render :action => :feed, :layout => false
+	end
 	
 end
