@@ -29,7 +29,13 @@ namespace :bloggity do
 		puts "Files successfully copied to #{destination_dir}!"
 	end
 	
-	desc "Run Bloggity tests"
+	desc "Run all Bloggity tests"
+	task :run_tests => :environment do 
+		Rake::Task['bloggity:test:blogs'].invoke 
+		Rake::Task['bloggity:test:blog'].invoke 
+	end
+	
+	desc "Run a Bloggity test"
 	rule "" do |t|
 		# test:file:method
 		if /bloggity\:test:(.*)(:([^.]+))?$/.match(t.name)

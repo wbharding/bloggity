@@ -9,7 +9,7 @@ class BlogsController < ApplicationController
 		blog_show_params = params[:blog_show_params] || {}
     search_condition = { :blog_set_id => @blog_set_id, :is_complete => true }
 		search_condition.merge!(:blog_tags => { :name => params[:tag_name] }) if params[:tag_name]
-		@blogs = Blog.paginate(:all, :select => "DISTINCT blogs.*", :conditions => search_condition, :joins => :tags, :order => "blogs.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+		@blogs = Blog.paginate(:all, :select => "DISTINCT blogs.*", :conditions => search_condition, :include => :tags, :order => "blogs.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
 		@page_name = @blog_set.title
     
 		respond_to do |format|
@@ -21,6 +21,7 @@ class BlogsController < ApplicationController
 	def close
 		@blog = Blog.find(params[:id])
 		@blog.update_attribute(:comments_closed, true)
+		flash[:notice] = "Commenting for this blog has been closed."
 		redirect_to blog_named_link(@blog)
 	end
 
@@ -47,6 +48,7 @@ class BlogsController < ApplicationController
 		@blog = Blog.find(:first, :conditions => ["id = ? OR url_identifier = ?", params[:id], params[:id]])
 
 		if !@blog || (!@blog.is_complete && !current_user.can_blog?(@blog.blog_set_id))
+			@blog = nil
 			flash[:error] = "You do not have permission to see this blog."
 			return (redirect_to( :action => 'index' ))
 		else

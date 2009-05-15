@@ -46,7 +46,7 @@ And you're done!
 Usage
 =====
 
-***** Creating blogs and blog sets ***** 
+***** Creating Blogs and Blog Sets ***** 
 
 My default, all blogs are members of a "BlogSet," which, as its name suggests, are a set of blogs.  This allows you to maintain various blogs (e.g., CEO blog, main blog, user blogs) within the same application.  The URL to a given blog is the combination of the BlogSet and the blog name.  So...
 
@@ -63,9 +63,40 @@ If you only plan to use one blog set, and would like your URLs to simply be form
 
 map.connect 'blog/:id', :controller => 'blogs', :action => 'show'
 
-***** Setting up user permissions *****
+***** Setting Up User Permissions *****
+
+All of the permissions for whether a user can post a blog, post a comment, moderate comments, and whether their comments are automatically approved are set by methods in your user.  Each permission takes an optional blog_set_id parameter, so you can configure permissions relative to a given BlogSet if you choose.  
+
+If you followed the install instructions and ported the methods from user_init.rb, you've already setup Bloggity permissions in your app.  Bravo.
+
+***** Uploading Assets *****
+
+When you are posting a blog, you can choose an asset to upload near the bottom of the page.  Upon selecting your asset, it will immediately begin to upload.  After the upload is complete, you'll be given the URL to the uploaded asset.  If it's an image, you'll also be shown a picture of what you uploaded.  Bloggity remembers which assets were associated with which posts, so if you return the post later you'll still see the assets associated with that post, however your users will not be able to see the assets you've uploaded with the blog post until you link those assets from within the blog post itself in some way.
+
+How you link to the asset will generally depend on what type of asset it is.  If it's an image, obviously you can just add an image tag that points at the asset URL.  If it's something else, you can probably figure it out.
+
+If you'll be uploading assets other than images, you'll need to edit BlogAsset.rb and change the "content_types" to include the type of asset you want to upload.
+
+Remember:  Uploading assets won't work unless you added jQuery and the jQuery form plugin with the "rake bloggity:bootstrap_third_party_assets" step.
+
+***** Other Options *****
+
+* Specify that a stylesheet other than the standard "blog.css" should be used to style a given blogset:  edit the blog set, there is a field for "stylesheet."  This path is relative to the base /public folder of your Rails app, so if you entered "stylesheets/bloggity/blog.css" you would point to the original blog.css file.
+* To save a blog in "draft mode," just don't check the "is_complete" checkbox when you save your blog.  It won't be added to the blog index (or viewable by users) until "is_complete" is checked. 
 
 Testing
 =======
 
-bloggity:test:blog
+"rake bloggity:run_tests" from anywhere within your app. 
+
+Todo
+====
+
+* Setup blog categories to do something meaningful
+* Better support for those who don't want to use FCKEditor
+* akismet spam filtering
+* Comment trackbacks
+
+Acknowledgements
+================
+

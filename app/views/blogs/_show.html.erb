@@ -33,8 +33,13 @@
 		<%= image_tag "bloggity/tag.gif" -%> <%= blog.tags.collect { |t| link_to(t.name, {:controller => 'blogs', :action => :index, :blog_set_id => blog.blog_set.id}.merge(:tag_name => t.name)) }.join(", ") %>
 	<% end %>
 	
-	<% if blog_logged_in? && current_user.can_blog?(@blog_set_id) %>
-		<p><%= link_to 'Edit', blog_named_link(blog, :edit) %> or <%= link_to 'Destroy', blog_named_link(blog, :destroy), :confirm => 'Are you sure?', :method => :delete %></p>
+	<% if blog_logged_in? && (current_user.can_blog?(@blog_set_id) || current_user.can_moderate_blog_comments?(@blog_set_id)) %>
+		<% actions = []
+		actions << link_to('Edit', blog_named_link(blog, :edit)) if current_user.can_blog?(@blog_set_id) 
+		actions << link_to('Destroy', blog_named_link(blog, :destroy), :confirm => 'Are you sure?', :method => :delete) if current_user.can_blog?(@blog_set_id) 
+		actions << link_to('Close commenting', blog_named_link(blog, :close), :confirm => 'Are you sure?') if current_user.can_moderate_blog_comments?(@blog_set_id) && !blog.comments_closed?
+		%>
+		<br /><br /><%= actions.join(" or ") -%>
 	<% end %>
 <br/>
 </div>

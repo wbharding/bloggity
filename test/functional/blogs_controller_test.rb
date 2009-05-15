@@ -26,10 +26,21 @@ class BlogsControllerTest < ActionController::TestCase
 		assert_response :success
 		assert_equal assigns(:blog_set_id), blog_set.id
 		assert_equal assigns(:blogs).size, Blog.count(:conditions => { :blog_set_id => blog_set.id, :is_complete => true })
-		debugger
 		assert_equal assigns(:blogs).first.blog_set_id, blog_set.id
 		assert_nil assigns(:blog)
 	end
 	
+	def test_blog_no_show_incomplete
+		blog = Blog.find(:first, :conditions => { :is_complete => false })
+		User.class_eval do
+			def can_blog?(blog_set_id = nil)
+				false
+			end
+		end
+		
+		get :show, :id => blog, :blog_set_id => blog.blog_set
+		assert_response :redirect
+		assert_nil assigns(:blog)
+	end
 	
 end

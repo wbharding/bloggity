@@ -19,10 +19,11 @@
 	<% if blog_logged_in? %>
 		<% if blog.comments_closed? %>
 			<p>Comments have been closed for this blog.</p>
-		<% else %>
+		<% end %>
+		<% if !blog.comments_closed? || current_user.can_moderate_blog_comments?(@blog_set_id) %> 
 			<h3>Leave a Reply</h3>
 			<div style="padding:5px;">
-				Logged in as <%= current_user.display_name %><br />
+				Logged in as <%= current_user.display_name %> <% if blog.comments_closed? -%><em style="color:gray">(We're only letting you leave comments cuz we want to stay on the boss' good side!)</em><% end -%><br />
 				<%= render :partial => 'blog_comments/new', :locals => { :blog => blog } %>
 			</div>
 		<% end %>

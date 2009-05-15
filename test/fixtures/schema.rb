@@ -58,5 +58,4 @@ ActiveRecord::Schema.define do
     t.boolean  "fck_created"
   end
 	
-  BlogSet.create(:title => "My Bloggity Blog", :subtitle => "No, this blog doesn't have a subtitle.  What's it to ya?", :url_identifier => 'main')
 end
