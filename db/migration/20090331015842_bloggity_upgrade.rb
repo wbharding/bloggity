@@ -14,7 +14,7 @@ class BloggityUpgrade < ActiveRecord::Migration
 		add_index :blogs, :category_id
 		
 		bc = BlogCategory.create(:name => "Main blog")
-		Blog.update_all(["category_id = ?", bc.id])
+		BlogPost.update_all(["category_id = ?", bc.id])
   end
 
   def self.down

@@ -1,6 +1,6 @@
 <br /><br />
 <%= error_messages_for :blog %>
-<% form_for(@blog, :url => { :controller => 'blogs', :action => :update, :id => @blog, :blog_set_id => @blog_set_id }) do |f| %>
+<% form_for(@blog_post, :url => { :controller => 'blogs', :action => :update, :id => @blog_post, :blog_set_id => @blog_set_id }) do |f| %>
   <p>New Blog Title: &nbsp;<%= f.text_field :title, :style => "font-size:20px" %></p>
 
   <p>Body<br />
@@ -20,7 +20,7 @@
 <br /><h3>Upload Assets</h3>
 <% remote_form_for(:blog_asset, :url => { :controller => "blogs", :action => :create_asset }, 
 		:html => { :method => :post, :id => 'uploadForm', :multipart => true }) do |f| -%>
-	<%= f.hidden_field :blog_id, :value => @blog.id %>
+	<%= f.hidden_field :blog_id, :value => @blog_post.id %>
 	<label>Upload a file:</label> <%= f.file_field :uploaded_data %>
 <% end %>
 
@@ -52,5 +52,5 @@
 <% end %>
 
 	<div id="outer_asset_container">
-		<%= render :partial => "blog_assets", :locals => { :blog_assets => @blog.assets } -%>
+		<%= render :partial => "blog_assets", :locals => { :blog_assets => @blog_post.assets } -%>
 	</div>

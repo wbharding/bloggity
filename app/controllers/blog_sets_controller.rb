@@ -95,7 +95,7 @@ class BlogSetsController < ApplicationController
 			return
 		end
 		@blog_set_id = @blog_set.id
-		@blogs = Blog.find(:all, :conditions => ["blog_set_id = ? AND is_complete = ?", @blog_set_id, true], :order => "blogs.created_at DESC", :limit => 15)
+		@blog_posts = BlogPost.find(:all, :conditions => ["blog_set_id = ? AND is_complete = ?", @blog_set_id, true], :order => "blogs.created_at DESC", :limit => 15)
 		render :action => :feed, :layout => false
 	end
 	

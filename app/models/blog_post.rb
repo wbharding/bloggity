@@ -19,7 +19,7 @@
 #  blog_set_id     :integer(4)      
 #
 
-class Blog < ActiveRecord::Base
+class BlogPost < ActiveRecord::Base
 	belongs_to :posted_by, :class_name => 'User'
   belongs_to :category, :class_name => 'BlogCategory'
 	has_many :comments, :class_name => 'BlogComment'

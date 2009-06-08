@@ -1,4 +1,4 @@
-class BlogsController < ApplicationController
+class BlogPostsController < ApplicationController
   before_filter :get_bloggity_page_name
 	before_filter :load_blog
 	before_filter :blog_writer_or_redirect, :except => [:close, :index, :show, :feed]
@@ -9,7 +9,7 @@ class BlogsController < ApplicationController
 		blog_show_params = params[:blog_show_params] || {}
     search_condition = { :blog_set_id => @blog_set_id, :is_complete => true }
 		search_condition.merge!(:blog_tags => { :name => params[:tag_name] }) if params[:tag_name]
-		@blogs = Blog.paginate(:all, :select => "DISTINCT blogs.*", :conditions => search_condition, :include => :tags, :order => "blogs.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+		@blog_posts = BlogPost.paginate(:all, :select => "DISTINCT blogs.*", :conditions => search_condition, :include => :tags, :order => "blogs.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
 		@page_name = @blog_set.title
     
 		respond_to do |format|
@@ -19,10 +19,10 @@ class BlogsController < ApplicationController
   end
 	
 	def close
-		@blog = Blog.find(params[:id])
-		@blog.update_attribute(:comments_closed, true)
+		@blog_post = BlogPost.find(params[:id])
+		@blog_post.update_attribute(:comments_closed, true)
 		flash[:notice] = "Commenting for this blog has been closed."
-		redirect_to blog_named_link(@blog)
+		redirect_to blog_named_link(@blog_post)
 	end
 
 	# Upload a blog asset
@@ -38,15 +38,15 @@ class BlogsController < ApplicationController
   # GET /blogs/1.xml
   def show
 		blog_show_params = params[:blog_show_params] || {}
-		@blogs = Blog.paginate(:all, :conditions => ["blog_set_id = ? AND is_complete = ?", @blog_set_id, true], :order => "created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
-		@blog = Blog.find(:first, :conditions => ["id = ? OR url_identifier = ?", params[:id], params[:id]])
+		@blog_posts = BlogPost.paginate(:all, :conditions => ["blog_set_id = ? AND is_complete = ?", @blog_set_id, true], :order => "created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+		@blog_post = BlogPost.find(:first, :conditions => ["id = ? OR url_identifier = ?", params[:id], params[:id]])
 
-		if !@blog || (!@blog.is_complete && !current_user.can_blog?(@blog.blog_set_id))
-			@blog = nil
+		if !@blog || (!@blog_post.is_complete && !current_user.can_blog?(@blog_post.blog_set_id))
+			@blog_post = nil
 			flash[:error] = "You do not have permission to see this blog."
 			return (redirect_to( :action => 'index' ))
 		else
-			@page_name = @blog.title
+			@page_name = @blog_post.title
 		end
 	
     respond_to do |format|
@@ -58,46 +58,46 @@ class BlogsController < ApplicationController
   # GET /blogs/new
   # GET /blogs/new.xml
   def new
-    @blog = Blog.new(:posted_by_id => current_user, :fck_created => true, :blog_set_id => @blog_set_id)
-		@blog.save # save it before we start editing it so we can know it's ID when it comes time to add images/assets
-		redirect_to blog_named_link(@blog, :edit)
+    @blog_post = BlogPost.new(:posted_by_id => current_user, :fck_created => true, :blog_set_id => @blog_set_id)
+		@blog_post.save # save it before we start editing it so we can know it's ID when it comes time to add images/assets
+		redirect_to blog_named_link(@blog_post, :edit)
   end
 
   # GET /blogs/1/edit
   def edit
-		@blog = Blog.find(params[:id])
+		@blog_post = BlogPost.find(params[:id])
   end
 
   # POST /blogs
   # POST /blogs.xml
   def create
-		@blog = Blog.new(params[:blog])
-	  @blog.posted_by = current_user
+		@blog_post = BlogPost.new(params[:blog])
+	  @blog_post.posted_by = current_user
 
-		if(@blog.save)
-			redirect_to blog_named_link(@blog)
+		if(@blog_post.save)
+			redirect_to blog_named_link(@blog_post)
 		else
-			render blog_named_link(@blog, :new)
+			render blog_named_link(@blog_post, :new)
 		end
   end
 
   # PUT /blogs/1
   # PUT /blogs/1.xml
   def update
-    @blog = Blog.find(params[:id])
+    @blog_post = BlogPost.find(params[:id])
 
-    if @blog.update_attributes(params[:blog])
-      redirect_to blog_named_link(@blog)
+    if @blog_post.update_attributes(params[:blog])
+      redirect_to blog_named_link(@blog_post)
     else
-      render blog_named_link(@blog, :edit)
+      render blog_named_link(@blog_post, :edit)
     end
   end
 
   # DELETE /blogs/1
   # DELETE /blogs/1.xml
   def destroy
-    @blog.destroy
-    redirect_to(blog_named_link(@blog, :index))
+    @blog_post.destroy
+    redirect_to(blog_named_link(@blog_post, :index))
   end
 
 	# --------------------------------------------------------------------------------------
@@ -108,6 +108,6 @@ class BlogsController < ApplicationController
 	
 	def load_blog
 		load_blog_set
-		@blog = Blog.find(:first, :conditions => ["blog_set_id = ? AND (id = ? OR url_identifier = ?)", @blog_set_id, params[:id], params[:id]]) if params[:id]
+		@blog_post = BlogPost.find(:first, :conditions => ["blog_set_id = ? AND (id = ? OR url_identifier = ?)", @blog_set_id, params[:id], params[:id]]) if params[:id]
 	end
 end
