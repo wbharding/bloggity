@@ -5,15 +5,23 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title><%= @page_name || "My Bloggity Blog" %></title>
-  <%= stylesheet_link_tag 'bloggity/blog' %>  		
+  <% if @blog && !@blog.stylesheet.blank? %>
+		<%= stylesheet_link_tag @blog.stylesheet %>
+	<% else %>
+		<%= stylesheet_link_tag 'bloggity/blog' %>
+	<% end %>
+	
+	<%= javascript_include_tag 'bloggity/jquery' %>
+	<%= javascript_include_tag 'bloggity/jquery-form' %>
+	<%= javascript_include_tag 'bloggity/fckeditor/fckeditor' %>
 </head>
 <body>
 
 <!-- bloggity styles namespaced by this div -->
 <div id="bloggity_container">
 	<%= render :partial => 'blogs/header' %>
-	<%= yield %>
-</div>
+	<%= yield  %>
 
+</div> <!-- bloggity_container -->
 </body>
 </html>

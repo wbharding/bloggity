@@ -1,7 +1,7 @@
 <%# Guess.
 # -params-
 # comment: the comment we're showing
-# blog_set: the blog set that this comment is part of
+# blog: the blog that this comment is part of
 -%>
 
 <li class="<%= cycle('dark', '') -%> <%= comment.approved ? "approved" : "not_approved" -%>">
@@ -11,10 +11,10 @@
 		<p><span style="font-weight:bold;"><%= link_to(comment.user.display_name, comment.user) %> says:</span><br />
 		<%= comment.created_at.strftime("%x at %X") %></p>
 		<p style="margin:10px 5px 10px 0pt;"><%= simple_format(auto_link(sanitize(comment.comment))) %></p>
-		<% if blog_logged_in? && (current_user == comment.user || current_user.can_moderate_blog_comments?(@blog_set_id)) %>
+		<% if blog_logged_in? && (current_user == comment.user || current_user.can_moderate_blog_comments?(@blog_id)) %>
 			<%= link_to "Edit comment", { :controller => 'blog_comments', :action => :edit, :id => comment.id } %>
 		<% end %>
-		<% if blog_logged_in? && current_user.can_moderate_blog_comments?(@blog_set_id) %>
+		<% if blog_logged_in? && current_user.can_moderate_blog_comments?(@blog_id) %>
 			<% unless comment.approved %>
 				<%= link_to "Approve comment", { :controller => 'blog_comments', :action => :approve, :id => comment, :referring_url => params } %>
 			<% end %>

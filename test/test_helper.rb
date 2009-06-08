@@ -12,7 +12,7 @@ require 'ruby-debug'
 Debugger.start
 
 FIXTURE_DIR = File.dirname(__FILE__) + '/fixtures'
-BLOGGITY_TABLES = ["blogs", "blog_comments", "blog_sets", "users"]
+BLOGGITY_TABLES = ["blog_posts", "blog_comments", "blogs", "users"]
 file = FIXTURE_DIR + "/schema.rb"
 load(file)
 

@@ -1,0 +1,6 @@
+<div id="main_content">
+	<%= render :partial => 'show', :locals => { :blog_post => @blog_post } %>
+	<%= render :partial => 'comments', :locals => { :blog_post => @blog_post } %>
+</div>
+
+<%= render :partial => 'side_nav' %>

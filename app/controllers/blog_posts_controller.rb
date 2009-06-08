@@ -7,14 +7,14 @@ class BlogPostsController < ApplicationController
   # GET /blogs.xml
   def index
 		blog_show_params = params[:blog_show_params] || {}
-    search_condition = { :blog_set_id => @blog_set_id, :is_complete => true }
+    search_condition = { :blog_id => @blog_id, :is_complete => true }
 		search_condition.merge!(:blog_tags => { :name => params[:tag_name] }) if params[:tag_name]
-		@blog_posts = BlogPost.paginate(:all, :select => "DISTINCT blogs.*", :conditions => search_condition, :include => :tags, :order => "blogs.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
-		@page_name = @blog_set.title
+		@blog_posts = BlogPost.paginate(:all, :select => "DISTINCT blogs.*", :conditions => search_condition, :include => :tags, :order => "blog_posts.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+		@page_name = @blog.title
     
 		respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @blogs }
+      format.xml  { render :xml => @blog_posts }
     end
   end
 	
@@ -29,7 +29,7 @@ class BlogPostsController < ApplicationController
 	def create_asset
 		image_params = params[:blog_asset] || {}
 		@image = BlogAsset.new(image_params)
-		@image.blog_id = image_params[:blog_id] # Can't mass-assign attributes of attachment_fu, so we'll set it manually here
+		@image.blog_post_id = image_params[:blog_post_id] # Can't mass-assign attributes of attachment_fu, so we'll set it manually here
 		@image.save!
 		render :text => @image.public_filename
 	end
@@ -38,10 +38,10 @@ class BlogPostsController < ApplicationController
   # GET /blogs/1.xml
   def show
 		blog_show_params = params[:blog_show_params] || {}
-		@blog_posts = BlogPost.paginate(:all, :conditions => ["blog_set_id = ? AND is_complete = ?", @blog_set_id, true], :order => "created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+		@blog_posts = BlogPost.paginate(:all, :conditions => ["blog_id = ? AND is_complete = ?", @blog_id, true], :order => "created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
 		@blog_post = BlogPost.find(:first, :conditions => ["id = ? OR url_identifier = ?", params[:id], params[:id]])
 
-		if !@blog || (!@blog_post.is_complete && !current_user.can_blog?(@blog_post.blog_set_id))
+		if !@blog_post || (!@blog_post.is_complete && !current_user.can_blog?(@blog_post.blog_id))
 			@blog_post = nil
 			flash[:error] = "You do not have permission to see this blog."
 			return (redirect_to( :action => 'index' ))
@@ -51,14 +51,14 @@ class BlogPostsController < ApplicationController
 	
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @blog }
+      format.xml  { render :xml => @blog_post }
     end
   end
 
   # GET /blogs/new
   # GET /blogs/new.xml
   def new
-    @blog_post = BlogPost.new(:posted_by_id => current_user, :fck_created => true, :blog_set_id => @blog_set_id)
+    @blog_post = BlogPost.new(:posted_by_id => current_user, :fck_created => true, :blog_id => @blog_id)
 		@blog_post.save # save it before we start editing it so we can know it's ID when it comes time to add images/assets
 		redirect_to blog_named_link(@blog_post, :edit)
   end
@@ -71,7 +71,7 @@ class BlogPostsController < ApplicationController
   # POST /blogs
   # POST /blogs.xml
   def create
-		@blog_post = BlogPost.new(params[:blog])
+		@blog_post = BlogPost.new(params[:blog_post])
 	  @blog_post.posted_by = current_user
 
 		if(@blog_post.save)
@@ -86,7 +86,7 @@ class BlogPostsController < ApplicationController
   def update
     @blog_post = BlogPost.find(params[:id])
 
-    if @blog_post.update_attributes(params[:blog])
+    if @blog_post.update_attributes(params[:blog_post])
       redirect_to blog_named_link(@blog_post)
     else
       render blog_named_link(@blog_post, :edit)
@@ -107,7 +107,7 @@ class BlogPostsController < ApplicationController
 	# --------------------------------------------------------------------------------------
 	
 	def load_blog
-		load_blog_set
-		@blog_post = BlogPost.find(:first, :conditions => ["blog_set_id = ? AND (id = ? OR url_identifier = ?)", @blog_set_id, params[:id], params[:id]]) if params[:id]
+		load_blog
+		@blog_post = BlogPost.find(:first, :conditions => ["blog_id = ? AND (id = ? OR url_identifier = ?)", @blog_id, params[:id], params[:id]]) if params[:id]
 	end
 end

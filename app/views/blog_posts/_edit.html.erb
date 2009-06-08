@@ -1,6 +1,6 @@
 <br /><br />
-<%= error_messages_for :blog %>
-<% form_for(@blog_post, :url => { :controller => 'blogs', :action => :update, :id => @blog_post, :blog_set_id => @blog_set_id }) do |f| %>
+<%= error_messages_for :blog_post %>
+<% form_for(@blog_post, :url => { :controller => 'blog_posts', :action => :update, :id => @blog_post, :blog_id => @blog_id }) do |f| %>
   <p>New Blog Title: &nbsp;<%= f.text_field :title, :style => "font-size:20px" %></p>
 
   <p>Body<br />
@@ -10,7 +10,7 @@
   <p>
 		<%= f.check_box :is_complete %> <%= f.label :is_complete -%>? <br />
 		Category <%= f.select :category_id, BlogCategory.find(:all).collect { |bc| [bc.name, bc.id] }.insert(0, ["None", nil]) %> <%= link_to "Create new category", { :controller => 'blog_categories', :action => :new } -%><br />
-		Blog Set <%= f.select :blog_set_id, BlogSet.find(:all).collect { |bc| [bc.title, bc.id] } %> <%= link_to "Create new blog set", { :controller => 'blog_sets', :action => :new } -%><br /> 
+		Blog <%= f.select :blog_id, Blog.find(:all).collect { |bc| [bc.title, bc.id] } %> <%= link_to "Create new blog", { :controller => 'blogs', :action => :new } -%><br /> 
 		Tags (separate with comma) <%= f.text_field :tag_string %>
 	</p>
 
@@ -18,9 +18,9 @@
 <% end %>
 
 <br /><h3>Upload Assets</h3>
-<% remote_form_for(:blog_asset, :url => { :controller => "blogs", :action => :create_asset }, 
+<% remote_form_for(:blog_asset, :url => { :controller => "blog_posts", :action => :create_asset }, 
 		:html => { :method => :post, :id => 'uploadForm', :multipart => true }) do |f| -%>
-	<%= f.hidden_field :blog_id, :value => @blog_post.id %>
+	<%= f.hidden_field :blog_post_id, :value => @blog_post.id %>
 	<label>Upload a file:</label> <%= f.file_field :uploaded_data %>
 <% end %>
 

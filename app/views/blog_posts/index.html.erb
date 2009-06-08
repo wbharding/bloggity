@@ -1,0 +1,21 @@
+<div id="main_content">
+	<% unless params[:tag_name].blank? %>
+		<div>Filtering all blogs tagged as "<%= params[:tag_name] -%>"</div>
+	<% end %>
+
+	<%= flash[:error] %>
+	<% if blog_logged_in? && current_user.can_blog?(@blog_id) %>
+		<%= link_to "New blog post", { :controller => 'blog_posts', :action => :new, :blog_id => @blog_id } %>
+	<% end %>
+
+	<% for blog_post in @blog_posts %>
+		<%= render :partial => 'show', :locals => { :blog_post => blog_post, :header_style => 'h2', :show_comment_count => true } %>
+	<% end %>
+	
+	<% if @blog_posts && @blog_posts.total_pages > 1 -%>
+		<div>See more blog posts &nbsp;&nbsp;</div>
+		<div class="paginate_container"><%= will_paginate(@blog_posts, {:form_name => :blog_show_params, :param_name => :page} ) -%></div>
+	<% end %>
+</div>
+
+<%= render :partial => 'blogs/side_nav' %>

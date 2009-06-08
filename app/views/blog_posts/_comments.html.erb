@@ -1,0 +1,32 @@
+<%# Renders the comments section for a blog post
+# -params-
+# blog_post: the blog post
+-%>
+
+<% responses = blog_post.comments.size %>
+<div id="commentContainer">
+	<h2><%= pluralize(responses, 'response') %> to <%= blog_post.title %></h2>
+	<% if responses > 0 %>
+		<ul class="comments_body">
+			<% blog_post.comments.each do |comment| %>
+				<% next unless comment.approved || (blog_logged_in? && current_user.can_moderate_blog_comments?(blog_post.blog_id)) %>
+				<%= render :partial => 'blog_comments/show', :locals => { :comment => comment } %>
+			<% end %>
+		</ul>
+	<% else %>
+		<p>No comments have been made on this blog.</p>
+	<% end %>
+	<% if blog_logged_in? %>
+		<% if blog_post.comments_closed? %>
+			<p>Comments have been closed for this blog.</p>
+		<% end %>
+		<% if !blog_post.comments_closed? || current_user.can_moderate_blog_comments?(@blog_id) %> 
+			<h3>Leave a Reply</h3>
+			<div style="padding:5px;">
+				Logged in as <%= current_user.display_name %> <% if blog_post.comments_closed? -%><em style="color:gray">(We're only letting you leave comments cuz we want to stay on the boss' good side!)</em><% end -%><br />
+				<%= render :partial => 'blog_comments/new', :locals => { :blog_post => blog_post } %>
+			</div>
+		<% end %>
+	<% end %>
+<br/>
+</div>

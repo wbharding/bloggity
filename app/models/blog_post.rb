@@ -1,7 +1,7 @@
 # == Schema Information
 # Schema version: 20090406223746
 #
-# Table name: blogs
+# Table name: blog_posts
 #
 #  id              :integer(4)      not null, primary key
 #  title           :string(255)     
@@ -16,7 +16,7 @@
 #  comments_closed :boolean(1)      
 #  category_id     :integer(4)      
 #  fck_created     :boolean(1)      
-#  blog_set_id     :integer(4)      
+#  blog_id     :integer(4)      
 #
 
 class BlogPost < ActiveRecord::Base
@@ -25,9 +25,9 @@ class BlogPost < ActiveRecord::Base
 	has_many :comments, :class_name => 'BlogComment'
 	has_many :assets, :class_name => 'BlogAsset'
 	has_many :tags, :class_name => 'BlogTag'
-	belongs_to :blog_set
+	belongs_to :blog
 	
-	validates_presence_of :blog_set_id, :posted_by_id
+	validates_presence_of :blog_id, :posted_by_id
 	validate :authorized_to_blog?
 	
 	# Recommended... but only if you have it:
@@ -54,7 +54,7 @@ class BlogPost < ActiveRecord::Base
 	end
 	
 	def authorized_to_blog?
-		unless(self.posted_by && self.posted_by.can_blog?(self.blog_set_id))
+		unless(self.posted_by && self.posted_by.can_blog?(self.blog_id))
 			self.errors.add(:posted_by_id, "is not authorized to post to this blog")
 		end
 	end
@@ -65,7 +65,7 @@ class BlogPost < ActiveRecord::Base
 		these_tags = self.tag_string.split(",")
 		these_tags.each do |tag|
 			sanitary_tag = tag.strip.chomp
-			BlogTag.create(:name => sanitary_tag, :blog_id => self.id)
+			BlogTag.create(:name => sanitary_tag, :blog_post_id => self.id)
 		end
 	end
 end

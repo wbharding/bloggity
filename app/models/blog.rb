@@ -5,5 +5,5 @@
 # t.datetime "created_at"
 # t.datetime "updated_at"
 
-class BlogSet < ActiveRecord::Base
+class Blog < ActiveRecord::Base
 end

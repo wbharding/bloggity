@@ -15,7 +15,7 @@
 #
 
 class BlogAsset < ActiveRecord::Base
-	belongs_to :blog
+	belongs_to :blog_post
 	
 	has_attachment  :content_type => :image,
 		:storage => :file_system,

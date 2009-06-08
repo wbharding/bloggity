@@ -14,10 +14,10 @@
 
 class BlogComment < ActiveRecord::Base
 	belongs_to :user
-	belongs_to :blog
+	belongs_to :blog_post
 	attr_protected :approved
 	
-	validates_presence_of :blog_id, :user_id, :comment
+	validates_presence_of :blog_post_id, :user_id, :comment
 	before_create :determine_approval
 	
 	# --------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ class BlogComment < ActiveRecord::Base
 	# --------------------------------------------------------------------------------------
 	
 	def determine_approval
-		self.approved = if self.user.blog_comment_auto_approved?(self.blog.blog_set_id)
+		self.approved = if self.user.blog_comment_auto_approved?(self.blog_post.blog_id)
 			true
 		else
 			false

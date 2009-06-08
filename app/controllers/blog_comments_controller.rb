@@ -36,10 +36,10 @@ class BlogCommentsController < ApplicationController
 	
 	def load_blog_comment 
 		@blog_comment = BlogComment.find(params[:id])
-		@blog_post = @blog_comment.try(:blog)
-		@blog_set = @blog_post.try(:blog_set)
-		@blog_set_id = @blog_set && @blog_set.id
-		unless current_user && @blog_comment && ((current_user == @blog_comment.user) || (current_user.can_moderate_blog_comments?(@blog_set && @blog_set.id)))
+		@blog_post = @blog_comment.try(:blog_post)
+		@blog = @blog_post.try(:blog)
+		@blog_id = @blog && @blog.id
+		unless current_user && @blog_comment && ((current_user == @blog_comment.user) || (current_user.can_moderate_blog_comments?(@blog && @blog.id)))
 			flash[:error] = "You don't have permission to edit that comment"
 			redirect_to blog_named_link(@blog_post)
 			false

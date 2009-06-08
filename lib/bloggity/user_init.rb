@@ -5,7 +5,7 @@ module Bloggity
     def self.included(base)
       base.class_eval do
 				# Copy these to your user model
-				has_many :blogs
+				has_many :blog_posts
 				has_many :blog_comments
 				
 				# Implement in your user model 
@@ -14,7 +14,7 @@ module Bloggity
 				end
 				
 				# Implement in your user model 
-				def can_blog?(blog_set_id = nil)
+				def can_blog?(blog_id = nil)
 					# This can be implemented however you want, but here's how I would do it, if I were you and I had multiple blogs, 
 					# where some users were allowed to write in one set of blogs and other users were allowed to write in a different 
 					# set:
@@ -30,12 +30,12 @@ module Bloggity
 				end
 				
 				# Implement in your user model 
-				def can_moderate_blog_comments?(blog_set_id = nil)
+				def can_moderate_blog_comments?(blog_id = nil)
 					true
 				end
 				
 				# Implement in your user model, if you care.
-				def blog_comment_auto_approved?(blog_set_id = nil)
+				def blog_comment_auto_approved?(blog_id = nil)
 					true
 				end
 				

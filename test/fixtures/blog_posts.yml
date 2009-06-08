@@ -1,0 +1,57 @@
+# == Schema Information
+# Schema version: 20090301221723
+#
+# Table name: blogs
+#
+#  id              :integer(4)      not null, primary key
+#  title           :string(255)     
+#  body            :text            
+#  tag_string      :string(255)     
+#  posted_by_id    :integer(4)      
+#  is_complete     :boolean(1)      
+#  created_at      :datetime        
+#  updated_at      :datetime        
+#  url_identifier  :string(255)     
+#  category_id     :integer(4)      
+#  comments_closed :boolean(1)      
+#
+
+--- 
+blog_post_valid_and_posted: 
+  created_at: 2008-09-01 02:14:29
+  body: |
+    <div style="float:right;margin:5px;width:250px;text-align:center;"><img src="/images/blog/dog.gif"><br />    <em>YAR, scruvy dog! Bonanzle's got some filthy scallywags!  And yer one of em!</em></div>    Beta is up, and scurvydog has arrived.  That's right -- August 31, 2008 will mark the last day of Bonanzle in Beta!  What does that mean for you?  Probably not too much.  Many bugs have been squashed and we would like to thank our community for bringing the majority of them to our attention.  Despite the end of our official "beta," we expect heavy development of the site to continue through at least October.  In the next week or two, we have our sites set on at least three major additions to the site (browsing by booth, buying without pre-registering, and shipping with USPS).  So even though we might not use the "beta" crutch anymore, we'll probably still be changing faster than many sites that are in beta.    What else is new?    August was a good time to be Bonanzling!  Our user base increased almost 400% to a total of 1094 users!  Not one sour apple out of the bunch.  At approximately 10:26pm on August 29th, Bonanzle welcomed our 1000th  user.  We can assure you that <a href="http://www.bonanzle.com/users/1913/profile">scurvydogg</a> received one of the warmest welcomes possible!    August also marked Bonanzle surpassing the 27,500 item mark!  Our user listings are regularly showing up on Google Base, Oodle assuring them a ton of exposure.  Combine this to our daily traffic average of over 1500 visits and folks you have an honest to goodness website!     Of course none of these milestones could have been possible without our fantastic community.  Because of you we exist.  Because of you we are growing faster than any other online marketplace we know of.  Because of you Bonanzle is starting to spread far and wide.  Bill and I thank you for all of your efforts in August.  We really kicked major booty.  We are excited to see what September will bring!  What do you think guys and gals?  How many people do you think we can reach in September?  Another 400% user increase?  Maybe 50,000 items?  Could we surpass those numbers?  One thing is for sure.  With our amazing community, anything is possible!  title: Bonanzle Hails Scurvy Dog
+  url_identifier: Bonanzle_Hails_Scurvy_Dog
+  updated_at: 2008-09-01 02:23:27
+  tag_string: ""
+  id: "1"
+  category_id: 
+  is_complete: true
+  posted_by_id: "1"
+  blog_id: "1"
+
+blog_post_valid_and_posted_to_secondary: 
+  created_at: 2008-09-01 02:14:29
+  body: |
+    Testing one two three  title: Bonanzle Hails Scurvy Dog
+  url_identifier: Bonanzle_Hails_Scurvy_Dog
+  updated_at: 2008-09-01 02:23:27
+  tag_string: ""
+  id: "2"
+  category_id: 
+  is_complete: true
+  posted_by_id: "1"
+  blog_id: "2"
+
+blog_post_in_draft_mode: 
+  created_at: 2008-09-01 02:14:29
+  body: |
+    Testing one two three  title: Draft mode blog post
+  url_identifier: Draft_mode_blog_post
+  updated_at: 2008-09-01 02:23:27
+  tag_string: ""
+  id: "3"
+  category_id: 
+  is_complete: false
+  posted_by_id: "1"
+  blog_id: "1"

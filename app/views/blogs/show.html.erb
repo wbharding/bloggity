@@ -1,6 +1,24 @@
-<div id="main_content">
-	<%= render :partial => 'show', :locals => { :blog => @blog } %>
-	<%= render :partial => 'comments', :locals => { :blog => @blog } %>
-</div>
+<p>
+  <b>Title:</b>
+  <%=h @blog.title %>
+</p>
+<p>
+  <b>Subtitle:</b>
+  <%=h @blog.subtitle %>
+</p>
+<p>
+  <b>Url identifier:</b>
+  <%=h @blog.url_identifier %>
+</p>
+<p>
+  <b>Stylesheet:</b>
+	<%=h @blog.stylesheet %>
+</p>
+<p>
+  <b>Feedburner URL</b>
+	<%= @blog.feedburner_url %>
+</p>
+	
 
-<%= render :partial => 'side_nav' %>
+<%= link_to 'Edit', edit_blog_path(@blog) %> |
+<%= link_to 'Back', blog_path %>

@@ -1,0 +1,45 @@
+<%# Renders a blog post
+# -params-
+# blog_post: the blog post
+# header_style (optional): 'h1', 'h2', etc.
+# show_comment_count (optional): true or false
+-%>
+
+<% header_style ||= 'h1'
+   show_comment_count ||= false %>
+	 
+<div class="one_blog">
+	<<%= header_style %> style="margin-bottom:0px"><%= link_to(blog_post.title, blog_named_link(blog_post)) %></<%= header_style %>>
+	<div class="info">
+		<%= image_tag "bloggity/time.gif" -%> Posted on <%= blog_post.created_at.strftime("%B %d, %Y") %>
+		<%= image_tag "bloggity/user.gif" -%> <%= link_to(blog_post.posted_by.display_name, blog_post.posted_by) -%>
+		<% if show_comment_count %>
+			<%= image_tag "bloggity/comment.gif" -%> <% if blog_post.comments.empty? %><%= link_to "No comments", blog_named_link(blog_post) -%><% else %><%= link_to pluralize(blog_post.comments.size, "comment"), blog_named_link(blog_post) -%><% end %>
+		<% end %>
+	</div>
+	
+	<p><% if blog_post.fck_created %>
+		<%= blog_post.body -%>
+	<% else %>
+		<%= simple_format(auto_link(blog_post.body)) %>
+	<% end %>
+	</p>
+	
+	<% if blog_post.category %>
+		<%= image_tag "bloggity/cat.gif" -%> <%= blog_post.category.name %>
+	<% end %>
+	
+	<% unless blog_post.tags.blank? %>
+		<%= image_tag "bloggity/tag.gif" -%> <%= blog_post.tags.collect { |t| link_to(t.name, {:controller => 'blog_posts', :action => :index, :blog_id => blog_post.blog_id}.merge(:tag_name => t.name)) }.join(", ") %>
+	<% end %>
+	
+	<% if blog_logged_in? && (current_user.can_blog?(@blog_id) || current_user.can_moderate_blog_comments?(@blog_id)) %>
+		<% actions = []
+		actions << link_to('Edit', blog_named_link(blog_post, :edit)) if current_user.can_blog?(@blog_id) 
+		actions << link_to('Destroy', blog_named_link(blog_post, :destroy), :confirm => 'Are you sure?', :method => :delete) if current_user.can_blog?(@blog_id) 
+		actions << link_to('Close commenting', blog_named_link(blog_post, :close), :confirm => 'Are you sure?') if current_user.can_moderate_blog_comments?(@blog_id) && !blog_post.comments_closed?
+		%>
+		<br /><br /><%= actions.join(" or ") -%>
+	<% end %>
+<br/>
+</div>
