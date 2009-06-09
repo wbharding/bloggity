@@ -13,11 +13,12 @@ Bloggity 1.0 sports the following featureset:
   * Wordpress-like WYSIWYG editor to write blogs in (requires FCKEditor, which is bundled with the plugin)
   * Separate configurable permissions for writing, commenting on, and moderating comments for blogs
   * Pre-built AJAX uploading for blog assets of whatever sort.  Insert assets into your blog in whatever manner you choose
-  * Ability to use custom stylesheets on a per-blogset basis (i.e., the Founder's blog can use different styling than the user blogs)
+  * Ability to use custom stylesheets on a per-blog basis (i.e., the Founder's blog can use different styling than the user blogs)
   * RSS 2.0 feeds
   * Ability to tag blog posts, filter blogs by tag
   * Ability to categorize blog posts
   * Blogs can be saved in draft mode before publishing
+  * Built in support for gravatars
   * Bloggity maintains its own routes, controllers, models, and views.  Bloggity was designed to be as "drag and drop" as possible.  You shouldn't need to manually copy or add anything to your existing app (though the rake install task will copy a couple assets for you into /public/*/bloggity directories)
   * Model & controller test suite   
 
@@ -46,28 +47,32 @@ And you're done!
 Usage
 =====
 
-***** Creating Blogs and Blog Sets ***** 
+***** Creating Blogs and Blog Posts ***** 
 
-My default, all blogs are members of a "BlogSet," which, as its name suggests, are a set of blogs.  This allows you to maintain various blogs (e.g., CEO blog, main blog, user blogs) within the same application.  The URL to a given blog is the combination of the BlogSet and the blog name.  So...
+By default, all blogs posts are members of a "Blog."  This allows you to maintain various blogs (e.g., CEO blog, main blog, user blogs) within the same application.  The URL to a given blog post is the combination of the blog name and the blog post name.  So...
 
-To create a new blog in the default (main) blogset:
-http://localhost:3000/blog_sets/1/blogs/new
+To create a new blog post in the default (main) blog:
+http://localhost:3000/blogs/1/blog_posts/new
 
-To create a new blog set:
-http://localhost:3000/blog_sets/new
+To create a new blog:
+http://localhost:3000/blogs/new
  
-To view a blog entitled "My first blog" that was posted to the default (main) blogset:
-http://localhost:3000/blogs/main/My_first_blog
+To view a blog post entitled "My first blog" that was posted to the main blog:
+http://localhost:3000/blog/main/My_first_blog
 
-If you only plan to use one blog set, and would like your URLs to simply be formatted as http://localhost:3000/blog/My_first_blog, you can add the following line to your routing file:
+***** I Am Only Planning to Use One Blog, Can this be Simpler? *****
 
-map.connect 'blog/:id', :controller => 'blogs', :action => 'show'
+Probably... :)
 
-That would probably work... :)
+If you only plan to use one blog, and would like your URLs to simply be formatted as http://localhost:3000/blog/My_first_blog, you might just be able to add this to your routing file:
+
+map.connect 'blog/:id', :controller => 'blog_posts', :action => 'show'
+
+I haven't had a chance to test this yet, though.  If anyone is using bloggity with one blog, feel free to drop us a line at the WilliamBHarding blog with your results.
 
 ***** Setting Up User Permissions *****
 
-All of the permissions for whether a user can post a blog, post a comment, moderate comments, and whether their comments are automatically approved are set by methods in your user.  Each permission takes an optional blog_set_id parameter, so you can configure permissions relative to a given BlogSet if you choose.  
+All of the permissions for whether a user can post a blog, post a comment, moderate comments, and whether their comments are automatically approved are set by methods in your user.  Each permission takes an optional blog_id parameter, so you can configure permissions relative to a given Blog if you choose.  
 
 If you followed the install instructions and ported the methods from user_init.rb, you've already setup Bloggity permissions in your app.  Bravo.
 
@@ -83,7 +88,7 @@ Remember:  Uploading assets won't work unless you added jQuery and the jQuery fo
 
 ***** Other Options *****
 
-* Specify that a stylesheet other than the standard "blog.css" should be used to style a given blogset:  edit the blog set, there is a field for "stylesheet."  This path is relative to the base /public folder of your Rails app, so if you entered "stylesheets/bloggity/blog.css" you would point to the original blog.css file.
+* Specify that a stylesheet other than the standard "blog.css" should be used to style a given blog:  edit the blog, there is a field for "stylesheet."  This path is relative to the base /public folder of your Rails app, so if you entered "stylesheets/bloggity/blog.css" you would point to the original blog.css file.
 * To save a blog in "draft mode," just don't check the "is_complete" checkbox when you save your blog.  It won't be added to the blog index (or viewable by users) until "is_complete" is checked. 
 
 Testing
@@ -95,9 +100,11 @@ Todo
 ====
 
 * Setup blog categories to do something meaningful
+* If blog post page is refreshed via F5 (after clicking new), the request to create a new blog is re-POSTed, meaning user is sent to a new blog.  Would be nice if it weren't so.
 * Better support for those who don't want to use FCKEditor
 * akismet spam filtering
 * Comment trackbacks
+
 
 Acknowledgements
 ================

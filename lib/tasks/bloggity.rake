@@ -1,9 +1,9 @@
 require 'active_record'
 require File.join(File.dirname(__FILE__), '../task_util')
-require 'ruby-debug'
+#require 'ruby-debug'
 
 include TaskUtil
-Debugger.start
+#Debugger.start
 
 BLOGGITY_BASE_DIR = File.join(File.dirname(__FILE__), "../..")
 

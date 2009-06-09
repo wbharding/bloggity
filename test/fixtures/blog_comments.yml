@@ -3,7 +3,7 @@ blog_comments_070:
   comment: I like!
   created_at: 2008-09-20 17:49:42
   updated_at: 2008-09-20 17:49:42
-  blog_id: "19"
+  blog_post_id: "19"
   approved: 
   id: "70"
   user_id: "1"
@@ -11,7 +11,7 @@ blog_comments_068:
   comment: The word "simple" has been reinvented by Bonanzle! If there is a simpler simple, this site knows how to do it.  After years of selling online, Bonanzle has brought back to life a site that creates excitement, and simplicity, rather than drudgery!  Great job!
   created_at: 2008-09-20 05:39:13
   updated_at: 2008-09-20 05:39:13
-  blog_id: "19"
+  blog_post_id: "19"
   approved: 
   id: "68"
   user_id: "1"
@@ -19,7 +19,7 @@ blog_comments_005:
   comment: Makes me hungry for a Three Musketeers!
   created_at: 2008-08-10 01:24:57
   updated_at: 2008-08-10 01:24:57
-  blog_id: "19"
+  blog_post_id: "19"
   approved: 
   id: "5"
   user_id: "1"

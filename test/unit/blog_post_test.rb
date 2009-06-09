@@ -22,7 +22,7 @@ class BlogPostTest < ActiveSupport::TestCase
 	end
 	
 	def test_url_identifier
-		blog_post = get_fixture(Blog, "blog_post_valid_and_posted")
+		blog_post = get_fixture(BlogPost, "blog_post_valid_and_posted")
 		blog_post.is_complete = false
 		blog_post.title = "My first blog"
 		blog_post.save

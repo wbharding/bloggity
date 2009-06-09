@@ -7,9 +7,14 @@ class BlogPostsController < ApplicationController
   # GET /blog_posts.xml
   def index
 		blog_show_params = params[:blog_show_params] || {}
-    search_condition = { :blog_id => @blog_id, :is_complete => true }
-		search_condition.merge!(:blog_tags => { :name => params[:tag_name] }) if params[:tag_name]
-		@blog_posts = BlogPost.paginate(:all, :select => "DISTINCT blog_posts.*", :conditions => search_condition, :joins => :tags, :order => "blog_posts.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+    # This is how I'd rather do it, however something about the interaction of these options is terminally dumb, 
+		# as the include/join is ignored by the test suite/site, respectively, when using this logic.
+		#search_condition = { :blog_id => @blog_id, :is_complete => true }
+		#search_condition.merge!(:blog_tags => { :name => params[:tag_name] }) if params[:tag_name]
+		
+		# So alas we must hack away:
+		search_condition = ["blog_id = ? AND is_complete = ? #{"AND blog_tags.name = ?" if params[:tag_name]}", @blog_id, true, params[:tag_name]].compact
+		@blog_posts = BlogPost.paginate(:all, :select => "DISTINCT blog_posts.*", :conditions => search_condition, :include => :tags, :order => "blog_posts.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
 		@page_name = @blog.title
     
 		respond_to do |format|

@@ -8,8 +8,8 @@ require File.expand_path(File.join(ENV['RAILS_ROOT'], 'config/environment.rb'))
 require 'active_record'
 require 'active_record/fixtures'
 require 'action_controller/test_process'
-require 'ruby-debug'
-Debugger.start
+#require 'ruby-debug'
+#Debugger.start
 
 FIXTURE_DIR = File.dirname(__FILE__) + '/fixtures'
 BLOGGITY_TABLES = ["blog_posts", "blog_comments", "blogs", "users"]
