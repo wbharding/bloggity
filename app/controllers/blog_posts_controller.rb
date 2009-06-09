@@ -9,7 +9,7 @@ class BlogPostsController < ApplicationController
 		blog_show_params = params[:blog_show_params] || {}
     search_condition = { :blog_id => @blog_id, :is_complete => true }
 		search_condition.merge!(:blog_tags => { :name => params[:tag_name] }) if params[:tag_name]
-		@blog_posts = BlogPost.paginate(:all, :select => "DISTINCT blogs.*", :conditions => search_condition, :include => :tags, :order => "blog_posts.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+		@blog_posts = BlogPost.paginate(:all, :select => "DISTINCT blog_posts.*", :conditions => search_condition, :joins => :tags, :order => "blog_posts.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
 		@page_name = @blog.title
     
 		respond_to do |format|

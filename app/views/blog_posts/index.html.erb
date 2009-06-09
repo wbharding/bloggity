@@ -1,11 +1,11 @@
 <div id="main_content">
-	<% unless params[:tag_name].blank? %>
-		<div>Filtering all blogs tagged as "<%= params[:tag_name] -%>"</div>
-	<% end %>
-
 	<%= flash[:error] %>
 	<% if blog_logged_in? && current_user.can_blog?(@blog_id) %>
 		<%= link_to "New blog post", { :controller => 'blog_posts', :action => :new, :blog_id => @blog_id } %>
+		<% end %>
+	
+	<% unless params[:tag_name].blank? %>
+		<div>Filtering all blogs tagged as "<%= params[:tag_name] -%>"</div>
 	<% end %>
 
 	<% for blog_post in @blog_posts %>
