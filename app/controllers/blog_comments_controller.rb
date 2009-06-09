@@ -11,7 +11,7 @@ class BlogCommentsController < ApplicationController
 		@blog_comment.user_id = current_user.id
 		
 		@blog_comment.save
-		@blog_post = @blog_comment.blog
+		@blog_post = @blog_comment.blog_post
 		redirect_to(blog_named_link(@blog_post))
 	end
 

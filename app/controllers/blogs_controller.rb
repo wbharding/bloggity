@@ -1,7 +1,7 @@
 class BlogsController < ApplicationController
   before_filter :get_bloggity_page_name
-	before_filter :can_modify_blogs_or_redirect
-	before_filter :load_blog, :only => [:feed]
+	before_filter :can_modify_blogs_or_redirect, :except => [:feed, :show]
+	before_filter :load_blog, :only => [:feed, :show]
 	
   def index
     @blogs = Blog.all
@@ -13,12 +13,11 @@ class BlogsController < ApplicationController
   end
 
   def show
-    @blog = Blog.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @blog }
-    end
+		if @blog
+			redirect_to "/blog/#{@blog.url_identifier || @blog.id}"
+		else
+			redirect_to "/blog"
+		end    
   end
 
   def new

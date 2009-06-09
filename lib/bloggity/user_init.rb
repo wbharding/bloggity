@@ -1,3 +1,4 @@
+require 'md5' # Needed only if you want to use gravatars
 
 module Bloggity
   module UserInit
@@ -53,10 +54,15 @@ module Bloggity
 					true
 				end
 				
+				# The path to your user's avatar.  Here we have sample code to fall back on a gravatar, if that's your bag.
 				# Implement in your user model 
 				def blog_avatar_url
-					case rand(1) # avatars intended for humor purposes only. do not take these urls seriously.
-					when 0: "http://www.pistonsforum.com/images/avatars/avatar22.gif"
+					if(self.respond_to?(:email))
+						downcased_email_address = self.email.downcase
+						hash = MD5::md5(downcased_email_address)
+						"http://www.gravatar.com/avatar/#{hash}"
+					else
+						"http://www.pistonsforum.com/images/avatars/avatar22.gif"
 					end
 				end
 				
