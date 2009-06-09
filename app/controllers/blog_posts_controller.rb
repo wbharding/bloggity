@@ -7,14 +7,21 @@ class BlogPostsController < ApplicationController
   # GET /blog_posts.xml
   def index
 		blog_show_params = params[:blog_show_params] || {}
-    # This is how I'd rather do it, however something about the interaction of these options is terminally dumb, 
-		# as the include/join is ignored by the test suite/site, respectively, when using this logic.
-		#search_condition = { :blog_id => @blog_id, :is_complete => true }
-		#search_condition.merge!(:blog_tags => { :name => params[:tag_name] }) if params[:tag_name]
+    @recent_posts = recent_posts(blog_show_params)
+		@blog_posts = if(params[:tag_name] || params[:category_id])
+			# This is how I'd *like* to filter on tag/category:  
+			#search_condition = { :blog_id => @blog_id, :is_complete => true }
+			#search_condition.merge!(:blog_tags => { :name => params[:tag_name] }) if params[:tag_name]
+			# However something about the interaction of these options is terminally dumb, as the include or join 
+			# is ignored by the test suite or script/server, respectively, when using this logic.
+			
+			# So alas... we must hack away:
+			search_condition = ["blog_id = ? AND is_complete = ? #{"AND blog_tags.name = ?" if params[:tag_name]} #{"AND category_id = ?" if params[:category_id]}", @blog_id, true, params[:tag_name], params[:category_id]].compact
+			BlogPost.paginate(:all, :select => "DISTINCT blog_posts.*", :conditions => search_condition, :include => :tags, :order => "blog_posts.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+		else
+			@recent_posts
+		end
 		
-		# So alas we must hack away:
-		search_condition = ["blog_id = ? AND is_complete = ? #{"AND blog_tags.name = ?" if params[:tag_name]}", @blog_id, true, params[:tag_name]].compact
-		@blog_posts = BlogPost.paginate(:all, :select => "DISTINCT blog_posts.*", :conditions => search_condition, :include => :tags, :order => "blog_posts.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
 		@page_name = @blog.title
     
 		respond_to do |format|
@@ -43,7 +50,7 @@ class BlogPostsController < ApplicationController
   # GET /blog_posts/1.xml
   def show
 		blog_show_params = params[:blog_show_params] || {}
-		@blog_posts = BlogPost.paginate(:all, :conditions => ["blog_id = ? AND is_complete = ?", @blog_id, true], :order => "created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+		@recent_posts = recent_posts(blog_show_params)
 		@blog_post = BlogPost.find(:first, :conditions => ["id = ? OR url_identifier = ?", params[:id], params[:id]])
 
 		if !@blog_post || (!@blog_post.is_complete && !current_user.can_blog?(@blog_post.blog_id))
@@ -101,9 +108,17 @@ class BlogPostsController < ApplicationController
   # DELETE /blog_posts/1
   # DELETE /blog_posts/1.xml
   def destroy
-    @blog_post.destroy
-    redirect_to(blog_named_link(@blog_post, :index))
+		@blog = @blog_post.blog
+		@blog_post.destroy
+    flash[:message] = "Blog #{@blog_post.title} was destroyed."
+    redirect_to(blog_named_link(nil, :index, { :blog => @blog }))
   end
+	
+	def pending
+		blog_show_params = params[:blog_show_params] || {}
+		@pending_posts = BlogPost.paginate(:all, :conditions => ["blog_id = ? AND is_complete = ?", @blog_id, false], :order => "blog_posts.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
+		@recent_posts = recent_posts(blog_show_params)
+	end
 
 	# --------------------------------------------------------------------------------------
 	# --------------------------------------------------------------------------------------
@@ -114,5 +129,9 @@ class BlogPostsController < ApplicationController
 	def load_blog_post
 		load_blog
 		@blog_post = BlogPost.find(:first, :conditions => ["blog_id = ? AND (id = ? OR url_identifier = ?)", @blog_id, params[:id], params[:id]]) if params[:id]
+	end
+	
+	def recent_posts(blog_show_params)
+		BlogPost.paginate(:all, :select => "DISTINCT blog_posts.*", :conditions => ["blog_id = ? AND is_complete = ?", @blog_id, true], :order => "blog_posts.created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)		
 	end
 end

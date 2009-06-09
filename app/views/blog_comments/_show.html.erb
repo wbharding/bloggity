@@ -20,6 +20,9 @@
 			<% end %>
 			<%= link_to "Delete comment", { :controller => 'blog_comments', :action => :destroy, :id => comment, :referring_url => params }, { :method => :delete, :confirm => "Are you sure you want to delete this comment?" } %>
 		<% end %>
+		<% unless comment.approved %>
+			<br /><br /><em>Comment awaiting moderator approval</em>
+		<% end %>
 		</p>
 	</td></tr></table>
 </li>

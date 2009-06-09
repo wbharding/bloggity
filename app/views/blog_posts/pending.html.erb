@@ -1,0 +1,12 @@
+<div id="main_content">
+	<h1>Pending Blog Posts</h1>
+	<table id="pending_blog_list"><tr id="header"><td>Blog Title</td><td>Created by</td><td>Created on</td><td>Actions</td></tr>
+	<% @pending_posts.each do |blog_post| %>
+		<tr><td><%= blog_post.title -%></td><td><%= blog_post.posted_by.display_name -%></td><td><%= blog_post.created_at.strftime("%x") -%></td>
+			<td><%= link_to "Edit blog", blog_named_link(blog_post, :edit) %>, <%= link_to "Delete blog", blog_named_link(blog_post, :destroy), { :method => :delete, :confirm => "Are you sure you want to delete this blog?" } %></td></tr>
+	<% end %>
+	</table>
+	<%= will_paginate(@pending_posts, {:form_name => :blog_show_params, :param_name => :page} ) %>
+</div>
+
+<%= render :partial => 'blog_posts/side_nav' %>

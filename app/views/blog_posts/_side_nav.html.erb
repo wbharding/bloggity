@@ -4,16 +4,16 @@
 <div id="side_nav_container" style="padding:5px 10px;">
 	<h4 class="subtitle">Recent Posts</h4>
 	<ul class="blog_list">
-	<% if @blog_posts.empty? %>
+	<% if @recent_posts.empty? %>
 		<li>None</li>
 	<% else %>
-		<% for blog_post in @blog_posts %>
+		<% for blog_post in @recent_posts %>
 			<li><%= link_to blog_post.title, blog_named_link(blog_post) %></li>
 		<% end %>
 	<% end %>
 	</ul>
-	<% if @blog_posts && @blog_posts.total_pages > 1 -%>
-		<div style="padding-bottom:4px;">More pages</div> <%= will_paginate(@blog_posts, {:form_name => :blog_show_params, :param_name => :page} ) -%>
+	<% if @recent_posts && @recent_posts.total_pages > 1 -%>
+		<div style="padding-bottom:4px;">More pages</div> <%= will_paginate(@recent_posts, {:form_name => :blog_show_params, :param_name => :page} ) -%>
 		<% end %>
 	<h4 class="subtitle">Other Choices</h4>
 	<div style="margin-top:4px"><%= link_to "#{image_tag "bloggity/feed-icon.png"} Subscribe to feed", blog_named_link(nil, :feed, :blog => @blog), :style => 'text-decoration:none' %></div>

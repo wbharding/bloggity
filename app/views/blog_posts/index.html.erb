@@ -1,11 +1,17 @@
 <div id="main_content">
 	<%= flash[:error] %>
+	<%= flash[:message] %>
 	<% if blog_logged_in? && current_user.can_blog?(@blog_id) %>
 		<%= link_to "New blog post", { :controller => 'blog_posts', :action => :new, :blog_id => @blog_id } %>
-		<% end %>
+		or <%= link_to "see pending posts", blog_named_link(nil, :pending, { :blog => @blog }) %>
+	<% end %>
 	
 	<% unless params[:tag_name].blank? %>
-		<div>Filtering all blogs tagged as "<%= params[:tag_name] -%>"</div>
+		<div>Filtering all blogs tagged as "<%= params[:tag_name] -%>."  <%= link_to "Clear filter", blog_named_link(nil, :index, { :blog => @blog }) -%></div>
+	<% end %>
+
+	<% if !params[:category_id].blank? && (cat = BlogCategory.find_by_id(params[:category_id])) %>
+		<div>Filtering all blogs in category "<%= cat.name -%>."  <%= link_to "Clear filter", blog_named_link(nil, :index, { :blog => @blog }) -%></div>
 	<% end %>
 
 	<% for blog_post in @blog_posts %>
