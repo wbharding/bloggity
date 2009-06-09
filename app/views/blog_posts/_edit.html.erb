@@ -9,8 +9,8 @@
 
   <p>
 		<%= f.check_box :is_complete %> <%= f.label :is_complete -%>? <br />
-		Category <%= f.select :category_id, BlogCategory.find(:all).collect { |bc| [bc.name, bc.id] }.insert(0, ["None", nil]) %> <%= link_to "Create new category", { :controller => 'blog_categories', :action => :new } -%><br />
-		Blog <%= f.select :blog_id, Blog.find(:all).collect { |bc| [bc.title, bc.id] } %> <%= link_to "Create new blog", { :controller => 'blogs', :action => :new } -%><br /> 
+		Category <%= f.select :category_id, BlogCategory.find(:all).collect { |bc| [bc.name, bc.id] }.insert(0, ["None", nil]) %> <%= link_to "Create new category", { :controller => 'blog_categories', :action => :new }, :popup => true -%><br />
+		Blog <%= f.select :blog_id, Blog.find(:all).collect { |bc| [bc.title, bc.id] } %> <%= link_to "Create new blog", { :controller => 'blogs', :action => :new }, :popup => true -%><br /> 
 		Tags (separate with comma) <%= f.text_field :tag_string %>
 	</p>
 
@@ -27,7 +27,7 @@
 <% javascript_tag do %>
 	jQuery(document).ready(function($) 
 	{
-		var fckEditor = new FCKeditor('blog[body]');
+		var fckEditor = new FCKeditor('blog_post[body]');
 		fckEditor.BasePath = "/javascripts/bloggity/fckeditor/";
 		fckEditor.ReplaceTextarea();
 		

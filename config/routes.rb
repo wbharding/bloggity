@@ -3,7 +3,11 @@ ActionController::Routing::Routes.draw do |map|
 		blogs.resources :blog_posts, :collection => { :create_asset => :post }, :member => { :close => :get }
 	end
 	
-	map.connect 'blogs/:blog_url_id_or_id', :controller => 'blog_posts', :action => 'index'
-	map.connect 'blogs/:blog_url_id_or_id/:id', :controller => 'blog_posts', :action => 'show'
+	map.resources :blog_categories
+	map.resources :blog_assets
+	map.resources :blog_comments
 	
+	map.connect 'blog/:blog_url_id_or_id', :controller => 'blog_posts', :action => 'index'
+	map.connect 'blog/:blog_url_id_or_id/:id', :controller => 'blog_posts', :action => 'show'
+	map.connect 'blog', :controller => 'blog_posts', :action => 'index', :blog_url_id_or_id => 'main'
 end

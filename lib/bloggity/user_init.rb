@@ -13,7 +13,8 @@ module Bloggity
 					"My name"
 				end
 				
-				# Implement in your user model 
+				# Whether a user can post to a given blog
+				# Implement in your user model
 				def can_blog?(blog_id = nil)
 					# This can be implemented however you want, but here's how I would do it, if I were you and I had multiple blogs, 
 					# where some users were allowed to write in one set of blogs and other users were allowed to write in a different 
@@ -29,13 +30,21 @@ module Bloggity
 					true
 				end
 				
-				# Implement in your user model 
+				# Whether a user can moderate the comments for a given blog
+				# Implement in your user model
 				def can_moderate_blog_comments?(blog_id = nil)
 					true
 				end
 				
+				# Whether the comments that a user makes within a given blog are automatically approved (as opposed to being queued until a moderator approves them)
 				# Implement in your user model, if you care.
 				def blog_comment_auto_approved?(blog_id = nil)
+					true
+				end
+				
+				# Whether a user has access to create, edit and destroy blogs
+				# Implement in your user model
+				def can_modify_blogs?
 					true
 				end
 				

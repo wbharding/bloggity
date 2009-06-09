@@ -1,5 +1,6 @@
 class BlogsController < ApplicationController
   before_filter :get_bloggity_page_name
+	before_filter :can_modify_blogs_or_redirect
 	before_filter :load_blog, :only => [:feed]
 	
   def index
@@ -85,5 +86,7 @@ class BlogsController < ApplicationController
 		@blog_posts = BlogPost.find(:all, :conditions => ["blog_id = ? AND is_complete = ?", @blog_id, true], :order => "blog_posts.created_at DESC", :limit => 15)
 		render :action => :feed, :layout => false
 	end
+	
+	private 
 	
 end

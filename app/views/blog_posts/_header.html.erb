@@ -3,6 +3,10 @@
 -%>
 
 <div id="header">
-	<h1><%= link_to(@blog.title, "/blogs/#{@blog.url_identifier}") -%></h1>
-	<p class="subtitle"><%= @blog.subtitle -%></p>
+	<% if @blog %>
+		<h1><%= link_to(@blog.title, "/blogs/#{@blog.url_identifier}") -%></h1>
+		<p class="subtitle"><%= @blog.subtitle -%></p>
+	<% else %>
+		<h1>Bloggity :: Rails Blogging Made Stupid Simple</h1> 
+	<% end %>
 </div>

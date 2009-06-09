@@ -1,10 +1,10 @@
 class BlogPostsController < ApplicationController
   before_filter :get_bloggity_page_name
-	before_filter :load_blog
+	before_filter :load_blog_post
 	before_filter :blog_writer_or_redirect, :except => [:close, :index, :show, :feed]
 	
-	# GET /blogs
-  # GET /blogs.xml
+	# GET /blog_posts
+  # GET /blog_posts.xml
   def index
 		blog_show_params = params[:blog_show_params] || {}
     search_condition = { :blog_id => @blog_id, :is_complete => true }
@@ -34,8 +34,8 @@ class BlogPostsController < ApplicationController
 		render :text => @image.public_filename
 	end
 	
-  # GET /blogs/1
-  # GET /blogs/1.xml
+  # GET /blog_posts/1
+  # GET /blog_posts/1.xml
   def show
 		blog_show_params = params[:blog_show_params] || {}
 		@blog_posts = BlogPost.paginate(:all, :conditions => ["blog_id = ? AND is_complete = ?", @blog_id, true], :order => "created_at DESC", :page => blog_show_params[:page] || 1, :per_page => 15)
@@ -55,21 +55,21 @@ class BlogPostsController < ApplicationController
     end
   end
 
-  # GET /blogs/new
-  # GET /blogs/new.xml
+  # GET /blog_posts/new
+  # GET /blog_posts/new.xml
   def new
     @blog_post = BlogPost.new(:posted_by_id => current_user, :fck_created => true, :blog_id => @blog_id)
 		@blog_post.save # save it before we start editing it so we can know it's ID when it comes time to add images/assets
 		redirect_to blog_named_link(@blog_post, :edit)
   end
 
-  # GET /blogs/1/edit
+  # GET /blog_posts/1/edit
   def edit
 		@blog_post = BlogPost.find(params[:id])
   end
 
-  # POST /blogs
-  # POST /blogs.xml
+  # POST /blog_posts
+  # POST /blog_posts.xml
   def create
 		@blog_post = BlogPost.new(params[:blog_post])
 	  @blog_post.posted_by = current_user
@@ -81,8 +81,8 @@ class BlogPostsController < ApplicationController
 		end
   end
 
-  # PUT /blogs/1
-  # PUT /blogs/1.xml
+  # PUT /blog_posts/1
+  # PUT /blog_posts/1.xml
   def update
     @blog_post = BlogPost.find(params[:id])
 
@@ -93,8 +93,8 @@ class BlogPostsController < ApplicationController
     end
   end
 
-  # DELETE /blogs/1
-  # DELETE /blogs/1.xml
+  # DELETE /blog_posts/1
+  # DELETE /blog_posts/1.xml
   def destroy
     @blog_post.destroy
     redirect_to(blog_named_link(@blog_post, :index))
@@ -106,7 +106,7 @@ class BlogPostsController < ApplicationController
 	# --------------------------------------------------------------------------------------
 	# --------------------------------------------------------------------------------------
 	
-	def load_blog
+	def load_blog_post
 		load_blog
 		@blog_post = BlogPost.find(:first, :conditions => ["blog_id = ? AND (id = ? OR url_identifier = ?)", @blog_id, params[:id], params[:id]]) if params[:id]
 	end

@@ -3,14 +3,13 @@
 <table>
   <tr>
     <th>Url identifier</th>
+		<th>Actions</th>
   </tr>
 
 <% @blogs.each do |blog| %>
   <tr>
     <td><%=h blog.url_identifier %></td>
-    <td><%= link_to 'Show', blog %></td>
-    <td><%= link_to 'Edit', edit_blog_path(blog) %></td>
-    <td><%= link_to 'Destroy', blog, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', blog %>, <%= link_to 'Edit', edit_blog_path(blog) %>, <%= link_to 'Destroy', blog, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

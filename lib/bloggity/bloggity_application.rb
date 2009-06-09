@@ -34,25 +34,34 @@ module Bloggity::BloggityApplication
 	end
 	
 	def blog_writer_or_redirect
-		if @blog_id && current_user && current_user.can_blog?(@blog_id) 
+		if @blog_id && current_user && current_user.can_blog?(@blog_id)
 			true
 		else
 			flash[:error] = "You don't have permission to do that."
-			redirect_to :controller => "blog_posts" 
+			redirect_to "/blog"
 	    false
 		end
 	end
 	
 	def blog_comment_moderator_or_redirect
-		if @blog_id && current_user && current_user.can_moderate_blog_comments?(@blog_id) 
+		if @blog_id && current_user && current_user.can_moderate_blog_comments?(@blog_id)
 			true
 		else
 			flash[:error] = "You don't have permission to do that."
-			redirect_to :controller => "blog_posts" 
+			redirect_to "/blog"
 			false
 		end
 	end
 	
+	def can_modify_blogs_or_redirect
+		if(current_user && current_user.can_modify_blogs?)
+			true
+		else
+			redirect_to "/blog"
+			false
+		end
+	end
+		
   def get_bloggity_page_name
   	@page_name = look_up_page_name(params[:controller], params[:action])
   end

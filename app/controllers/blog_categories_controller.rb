@@ -1,5 +1,6 @@
 class BlogCategoriesController < ApplicationController
-  before_filter :blog_writer_or_redirect
+  before_filter :load_blog_category, :only => [:show, :edit, :destroy, :update]
+	before_filter :can_modify_blogs_or_redirect
 	
 	# GET /blog_categories
   # GET /blog_categories.xml
@@ -15,8 +16,6 @@ class BlogCategoriesController < ApplicationController
   # GET /blog_categories/1
   # GET /blog_categories/1.xml
   def show
-    @blog_category = BlogCategory.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @blog_category }
@@ -36,7 +35,6 @@ class BlogCategoriesController < ApplicationController
 
   # GET /blog_categories/1/edit
   def edit
-    @blog_category = BlogCategory.find(params[:id])
   end
 
   # POST /blog_categories
@@ -59,8 +57,6 @@ class BlogCategoriesController < ApplicationController
   # PUT /blog_categories/1
   # PUT /blog_categories/1.xml
   def update
-    @blog_category = BlogCategory.find(params[:id])
-
     respond_to do |format|
       if @blog_category.update_attributes(params[:blog_category])
         flash[:notice] = 'BlogCategory was successfully updated.'
@@ -76,7 +72,6 @@ class BlogCategoriesController < ApplicationController
   # DELETE /blog_categories/1
   # DELETE /blog_categories/1.xml
   def destroy
-    @blog_category = BlogCategory.find(params[:id])
     @blog_category.destroy
 
     respond_to do |format|
@@ -84,4 +79,11 @@ class BlogCategoriesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+	
+	private
+	
+	def load_blog_category
+		@blog_category = BlogCategory.find(params[:id])
+		@blog_id = @blog_category.try(:blog_id)
+	end
 end
