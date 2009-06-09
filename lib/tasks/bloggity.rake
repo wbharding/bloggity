@@ -16,16 +16,20 @@ namespace :bloggity do
 	
 	desc "Copy the stylesheets and Javascripts used natively by bloggity into host app's public directory"
 	task :bootstrap_bloggity_assets => :environment do
-		destination_root = RAILS_ROOT + "/public/" 
-		Engines.mirror_files_from(BLOGGITY_BASE_DIR + "/public/stylesheets", destination_root + "stylesheets/bloggity")
-		Engines.mirror_files_from(BLOGGITY_BASE_DIR + "/public/images", destination_root + "images/bloggity")
+		destination_root = RAILS_ROOT + "/public/"
+    %w(stylesheets images).each{|asset|
+      Dir[File.join(BLOGGITY_BASE_DIR, 'public', asset, '*')].each{|f|
+        FileUtils.cp_r(f, File.expand_path(File.join(destination_root, asset, 'bloggity')))
+      }
+    }
 		puts "Files successfully copied!"
 	end
 	
 	desc "Copy the third party Javascripts (jquery and FCKEditor) by bloggity into host app's public directory"
 	task :bootstrap_third_party_assets => :environment do
 		destination_dir = RAILS_ROOT + "/public/javascripts/bloggity"
-		Engines.mirror_files_from(BLOGGITY_BASE_DIR + "/public/javascripts/third_party", destination_dir)
+		FileUtils.cp_r(File.join(BLOGGITY_BASE_DIR, 'public/javascripts/third_party/.'), destination_dir)
+    #Engines.mirror_files_from(BLOGGITY_BASE_DIR + "/public/javascripts/third_party", destination_dir)
 		puts "Files successfully copied to #{destination_dir}!"
 	end
 	
