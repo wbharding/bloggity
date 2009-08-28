@@ -26,10 +26,11 @@ module Bloggity::BloggityApplication
 	end
 	
 	def load_blog
-		if(!params[:blog_id] && (blog_url_identifier = params[:blog_url_id_or_id]))
+    blog_id = params[:blog_id] || (params[:controller] == 'blogs' && params[:id]) # A little help for trying to access a blog from '/blogs/:id'
+		if(blog_id.blank? && (blog_url_identifier = params[:blog_url_id_or_id]))
 			@blog = Blog.find_by_url_identifier(blog_url_identifier)
 		end
-		@blog_id = params[:blog_id] || (@blog && @blog.id) || params[:blog_url_id_or_id] || 1 # There is a default BlogSet created when the DB is bootstrapped, so we know we'll be able to fall back on this
+		@blog_id = blog_id || (@blog && @blog.id) || blog_url_identifier || 1 # There is a default BlogSet created when the DB is bootstrapped, so we know we'll be able to fall back on this
 		@blog = Blog.find(@blog_id) unless @blog
 	end
 	
