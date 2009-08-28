@@ -70,7 +70,7 @@ class BlogPostsController < ApplicationController
   # GET /blog_posts/new
   # GET /blog_posts/new.xml
   def new
-    @blog_post = BlogPost.new(:posted_by_id => current_user, :fck_created => true, :blog_id => @blog_id)
+    @blog_post = BlogPost.new(:posted_by => current_user, :fck_created => true, :blog_id => @blog_id)
 		@blog_post.save # save it before we start editing it so we can know it's ID when it comes time to add images/assets
 		redirect_to blog_named_link(@blog_post, :edit)
   end
