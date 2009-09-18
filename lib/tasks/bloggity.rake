@@ -18,8 +18,9 @@ namespace :bloggity do
 	task :bootstrap_bloggity_assets => :environment do
 		destination_root = RAILS_ROOT + "/public/"
     %w(stylesheets images).each{|asset|
-      unless File.exists?(asset)
-        FileUtils.mkpath(asset)
+      destination_path = destination_root + asset
+      unless File.exists?(destination_path)
+        FileUtils.mkpath(destination_path)
       end
       Dir[File.join(BLOGGITY_BASE_DIR, 'public', asset, '*')].each{|f|
         FileUtils.cp_r(f, File.expand_path(File.join(destination_root, asset, 'bloggity')))
